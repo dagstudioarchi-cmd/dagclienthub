@@ -114,6 +114,47 @@ main{max-width:760px;margin:0 auto;padding:3rem 1.5rem 6rem;}
 .rooms-locked{background:var(--light);border-radius:12px;padding:1.5rem;text-align:center;border:1.5px dashed var(--light);}
 .rooms-locked .lock-icon{font-size:2rem;margin-bottom:.5rem;}
 .rooms-locked p{font-size:.82rem;color:var(--muted);line-height:1.6;}
+
+/* ── PROGRAM LANTAI ── */
+.floor-config-row{display:flex;gap:1rem;align-items:flex-end;flex-wrap:wrap;margin-bottom:1.5rem;}
+.floor-config-row .fgroup{flex:1;min-width:140px;}
+.floor-toggle-group{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem;}
+.floor-toggle{padding:.35rem .85rem;border:1px solid var(--light);border-radius:8px;font-size:.78rem;color:var(--muted);background:var(--white);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.35rem;}
+.floor-toggle.on{background:rgba(184,151,90,.12);border-color:var(--accent);color:var(--ink);font-weight:500;}
+.floor-card{border:1px solid var(--light);border-radius:12px;overflow:hidden;margin-bottom:.75rem;}
+.floor-card-head{display:flex;align-items:center;gap:.75rem;padding:.65rem 1rem;background:rgba(0,0,0,.02);cursor:pointer;user-select:none;}
+.floor-badge{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:600;flex-shrink:0;font-family:'DM Mono',monospace;}
+.floor-badge.b{background:rgba(61,90,76,.12);color:#3d5a4c;}
+.floor-badge.n{background:rgba(184,151,90,.15);color:#7a6030;}
+.floor-badge.r{background:rgba(184,151,90,.25);color:#5a4020;}
+.floor-name-txt{font-size:.85rem;font-weight:500;color:var(--ink);flex:1;}
+.floor-room-count{font-size:.72rem;color:var(--muted);font-family:'DM Mono',monospace;}
+.floor-chevron{font-size:.8rem;color:var(--muted);transition:transform .2s;}
+.floor-chevron.open{transform:rotate(180deg);}
+.floor-card-body{padding:.85rem 1rem;border-top:1px solid var(--light);background:var(--white);}
+.floor-rooms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:.4rem;margin-bottom:.6rem;}
+.floor-room-chip{display:flex;align-items:center;gap:.4rem;padding:.4rem .65rem;border:1px solid var(--light);border-radius:8px;font-size:.77rem;color:var(--muted);background:var(--paper);cursor:pointer;transition:all .15s;user-select:none;}
+.floor-room-chip.sel{background:rgba(61,90,76,.09);border-color:rgba(61,90,76,.35);color:#3d5a4c;font-weight:500;}
+.floor-note{width:100%;padding:.5rem .7rem;border:1px solid var(--light);border-radius:8px;font-family:'Outfit',sans-serif;font-size:.8rem;background:var(--paper);color:var(--ink);resize:none;outline:none;transition:border-color .2s;}
+.floor-note:focus{border-color:var(--accent);}
+.prog-summary{display:flex;gap:.75rem;flex-wrap:wrap;padding:.65rem 1rem;background:var(--ink);border-radius:10px;margin-bottom:1.25rem;}
+.prog-sum-item{display:flex;align-items:center;gap:.4rem;font-size:.77rem;color:rgba(255,255,255,.7);}
+.prog-sum-item strong{color:var(--accent);font-weight:600;}
+.prog-sum-sep{width:1px;height:14px;background:rgba(255,255,255,.15);}
+
+/* ── FITUR AIR ── */
+.water-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.65rem;margin-bottom:.75rem;}
+.water-card{border:1.5px solid var(--light);border-radius:12px;padding:.85rem .75rem;cursor:pointer;transition:all .2s;background:var(--white);text-align:center;user-select:none;}
+.water-card:hover{border-color:var(--accent);}
+.water-card.sel{border-color:var(--accent);background:rgba(184,151,90,.08);}
+.water-card-icon{font-size:1.6rem;margin-bottom:.3rem;}
+.water-card-title{font-size:.8rem;font-weight:500;color:var(--ink);}
+.water-card-sub{font-size:.7rem;color:var(--muted);margin-top:.15rem;}
+.water-sub-form{background:var(--paper);border:1px solid var(--light);border-radius:10px;padding:.85rem 1rem;margin-bottom:.65rem;}
+.water-sub-form h5{font-size:.68rem;font-weight:600;letter-spacing:.12rem;text-transform:uppercase;color:var(--accent2);font-family:'DM Mono',monospace;margin-bottom:.7rem;}
+.water-flag-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.65rem;}
+.water-flag{font-size:.7rem;padding:.25rem .65rem;border-radius:999px;background:rgba(192,57,43,.1);color:#c0392b;font-weight:500;border:1px solid rgba(192,57,43,.2);}
+.water-flag.info{background:rgba(61,90,76,.1);color:#3d5a4c;border-color:rgba(61,90,76,.2);}
 #rooms-section{transition:opacity .25s;}
 #rooms-section.disabled{opacity:.5;pointer-events:none;}
 
@@ -201,11 +242,13 @@ main{max-width:760px;margin:0 auto;padding:3rem 1.5rem 6rem;}
   <div class="step-arrow">›</div>
   <div class="step" onclick="goStep(2)" data-step="2"><div class="step-num">2</div><span>Tipe Proyek</span></div>
   <div class="step-arrow">›</div>
-  <div class="step" onclick="goStep(3)" data-step="3"><div class="step-num">3</div><span>Paket & Ruangan</span></div>
+  <div class="step" onclick="goStep(25)" data-step="25"><div class="step-num">3</div><span>Program Lantai</span></div>
   <div class="step-arrow">›</div>
-  <div class="step" onclick="goStep(4)" data-step="4"><div class="step-num">4</div><span>Checklist</span></div>
+  <div class="step" onclick="goStep(3)" data-step="3"><div class="step-num">4</div><span>Paket & Ruangan</span></div>
   <div class="step-arrow">›</div>
-  <div class="step" onclick="goStep(5)" data-step="5"><div class="step-num">5</div><span>Ringkasan</span></div>
+  <div class="step" onclick="goStep(4)" data-step="4"><div class="step-num">5</div><span>Checklist</span></div>
+  <div class="step-arrow">›</div>
+  <div class="step" onclick="goStep(5)" data-step="5"><div class="step-num">6</div><span>Ringkasan</span></div>
 </div>
 
 <main>
@@ -294,7 +337,111 @@ main{max-width:760px;margin:0 auto;padding:3rem 1.5rem 6rem;}
       <div class="fgroup form-full"><label>Kebutuhan Khusus / Fasilitas Tambahan</label><textarea id="f-khusus" placeholder="mis. aksesibilitas difabel, ruang server, zona steril, kolam renang, lift, dll."></textarea></div>
     </div>
   </div>
-  <div class="nav-btns"><button class="btn-back" onclick="prevStep(2)">← Kembali</button><button class="btn-next" onclick="nextStep(2)">Lanjut: Paket & Ruangan →</button></div>
+  <div class="nav-btns"><button class="btn-back" onclick="prevStep(2)">← Kembali</button><button class="btn-next" onclick="nextStep(2)">Lanjut: Program Lantai →</button></div>
+</div>
+
+<!-- PAGE 2.5: PROGRAM LANTAI & FITUR AIR -->
+<div class="page" id="p25">
+  <div class="page-header">
+    <div class="page-label">Langkah 3</div>
+    <h1 class="page-title">Program Ruang per Lantai</h1>
+    <p class="page-desc">Tentukan distribusi ruang di setiap level bangunan dan tambahkan fitur air jika dibutuhkan.</p>
+  </div>
+
+  <div class="form-section">
+    <h4>Konfigurasi Lantai</h4>
+    <div class="floor-config-row">
+      <div class="fgroup">
+        <label>Jumlah Lantai</label>
+        <select id="fp-lantai" onchange="buildFloorProgram()">
+          <option value="1">1 Lantai</option>
+          <option value="2">2 Lantai</option>
+          <option value="3" selected>3 Lantai</option>
+          <option value="4">4 Lantai</option>
+        </select>
+      </div>
+      <div class="fgroup">
+        <label>Lantai Tambahan</label>
+        <div class="floor-toggle-group">
+          <button class="floor-toggle on" id="ft-basement" onclick="toggleFloorExtra('basement')">🔽 Basement</button>
+          <button class="floor-toggle" id="ft-rooftop" onclick="toggleFloorExtra('rooftop')">🔼 Rooftop</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="prog-summary" id="prog-summary">
+      <div class="prog-sum-item"><strong id="ps-level">4</strong>&nbsp;level</div>
+      <div class="prog-sum-sep"></div>
+      <div class="prog-sum-item"><strong id="ps-rooms">0</strong>&nbsp;ruang dipilih</div>
+      <div class="prog-sum-sep"></div>
+      <div class="prog-sum-item"><strong id="ps-water">1</strong>&nbsp;fitur air</div>
+    </div>
+
+    <div id="floor-cards-container"></div>
+  </div>
+
+  <div class="form-section">
+    <h4>Fitur Air</h4>
+    <div class="water-cards-grid">
+      <div class="water-card sel" id="wc-pool" onclick="toggleWaterFeature('pool')">
+        <div class="water-card-icon">🏊</div>
+        <div class="water-card-title">Kolam Renang</div>
+        <div class="water-card-sub">Basement / outdoor / rooftop</div>
+      </div>
+      <div class="water-card" id="wc-koi" onclick="toggleWaterFeature('koi')">
+        <div class="water-card-icon">🐟</div>
+        <div class="water-card-title">Kolam Koi</div>
+        <div class="water-card-sub">Taman / indoor</div>
+      </div>
+      <div class="water-card" id="wc-wf" onclick="toggleWaterFeature('wf')">
+        <div class="water-card-icon">💧</div>
+        <div class="water-card-title">Water Feature</div>
+        <div class="water-card-sub">Dinding air / kolam hias</div>
+      </div>
+    </div>
+
+    <div id="wsub-pool" class="water-sub-form">
+      <h5>Detail Kolam Renang</h5>
+      <div class="form-grid">
+        <div class="fgroup"><label>Ukuran (p × l meter)</label><input type="text" id="wp-ukuran" placeholder="mis. 5.3 × 2.0"></div>
+        <div class="fgroup"><label>Lokasi</label>
+          <select id="wp-lokasi"><option>Basement</option><option>Lantai 1</option><option>Outdoor / Halaman</option><option>Rooftop</option></select>
+        </div>
+        <div class="fgroup"><label>Tipe Kolam</label>
+          <select id="wp-tipe"><option>Reguler</option><option>Overflow</option><option>Infinity Edge</option><option>Plunge Pool</option></select>
+        </div>
+        <div class="fgroup"><label>Finishing</label>
+          <select id="wp-finish"><option>Mozaik</option><option>Granit</option><option>Cat Waterproof</option><option>Marmer</option></select>
+        </div>
+      </div>
+    </div>
+
+    <div id="wsub-koi" style="display:none" class="water-sub-form">
+      <h5>Detail Kolam Koi</h5>
+      <div class="form-grid">
+        <div class="fgroup"><label>Ukuran (p × l meter)</label><input type="text" id="wk-ukuran" placeholder="mis. 2.0 × 1.5"></div>
+        <div class="fgroup"><label>Sistem Filter</label>
+          <select id="wk-filter"><option>Biological Filter</option><option>UV Filter</option><option>Kombinasi</option></select>
+        </div>
+      </div>
+    </div>
+
+    <div id="wsub-wf" style="display:none" class="water-sub-form">
+      <h5>Detail Water Feature</h5>
+      <div class="form-grid">
+        <div class="fgroup"><label>Tipe</label>
+          <select id="wwf-tipe"><option>Dinding Air</option><option>Kolam Hias</option><option>Fountain</option></select>
+        </div>
+        <div class="fgroup"><label>Lokasi</label>
+          <select id="wwf-lokasi"><option>Foyer / Lobby</option><option>Taman</option><option>Rooftop</option></select>
+        </div>
+      </div>
+    </div>
+
+    <div class="water-flag-row" id="water-flags"></div>
+  </div>
+
+  <div class="nav-btns"><button class="btn-back" onclick="prevStep(25)">← Kembali</button><button class="btn-next" onclick="nextStep(25)">Lanjut: Paket & Ruangan →</button></div>
 </div>
 
 <!-- PAGE 3: PAKET & RUANGAN -->
@@ -686,19 +833,30 @@ function getRoomCount() {
 // ── NAVIGASI ─────────────────────────────────────────────────────────────────
 function goStep(n) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('p' + n).classList.add('active');
-  document.querySelectorAll('.step').forEach(s => {
-    const sn = parseInt(s.dataset.step);
+  const pageId = n === 25 ? 'p25' : 'p' + n;
+  document.getElementById(pageId).classList.add('active');
+  const stepOrder = [1, 2, 25, 3, 4, 5];
+  const stepIdx = stepOrder.indexOf(n);
+  document.querySelectorAll('.step').forEach((s, i) => {
     s.classList.remove('active','done');
-    if (sn === n) s.classList.add('active');
-    else if (sn < n) s.classList.add('done');
+    if (i === stepIdx) s.classList.add('active');
+    else if (i < stepIdx) s.classList.add('done');
   });
-  document.getElementById('hstatus').textContent = 'Langkah ' + n + ' dari 5';
+  const labelNum = stepIdx + 1;
+  document.getElementById('hstatus').textContent = 'Langkah ' + labelNum + ' dari 6';
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (n === 5) buildSummary();
 }
-function nextStep(n) { goStep(n + 1); }
-function prevStep(n) { goStep(n - 1); }
+function nextStep(n) {
+  const stepOrder = [1, 2, 25, 3, 4, 5];
+  const idx = stepOrder.indexOf(n);
+  if (idx < stepOrder.length - 1) goStep(stepOrder[idx + 1]);
+}
+function prevStep(n) {
+  const stepOrder = [1, 2, 25, 3, 4, 5];
+  const idx = stepOrder.indexOf(n);
+  if (idx > 0) goStep(stepOrder[idx - 1]);
+}
 
 // ── PACKAGE ──────────────────────────────────────────────────────────────────
 function selectPkg(el, wrapId) {
@@ -765,6 +923,8 @@ function buildSummary() {
     ['Anggaran Konstruksi', sel('f-budget') || '—'],
     ['Gaya Arsitektur', sel('f-gaya') || '—'],
     ['Kebutuhan Khusus', v('f-khusus') || '—'],
+    ['Program Lantai', getFpSummaryText() || '—'],
+    ['Fitur Air', getWaterSummaryText() || '—'],
   ]);
 
   const arch = getPkg('pkg-arch');
@@ -865,6 +1025,12 @@ function sendWA() {
 • Gaya arsitektur: ${sel('f-gaya') || '—'}
 • Kebutuhan khusus: ${v('f-khusus') || '—'}
 
+🏗️ *PROGRAM RUANG PER LANTAI*
+${getFpSummaryText()}
+
+💧 *FITUR AIR*
+${getWaterSummaryText()}
+
 📦 *PAKET LAYANAN*
 • Architecture: ${arch.val || 'Tidak dipilih'}
 • Interior: ${intP.val || 'Tidak dipilih'}
@@ -885,7 +1051,216 @@ _Dikirim via Form Brief DAG Studio_`;
   window.open('https://wa.me/6285220890007?text=' + encodeURIComponent(msg), '_blank');
 }
 
-// Init progress
+// ── PROGRAM LANTAI ────────────────────────────────────────────────────────────
+const FP_ROOMS = {
+  basement: [
+    {id:'b-pool',icon:'🏊',label:'Kolam Renang'},
+    {id:'b-park',icon:'🚗',label:'Parkir / Garasi'},
+    {id:'b-util',icon:'🔧',label:'Ruang Utilitas'},
+    {id:'b-store',icon:'📦',label:'Storage / Gudang'},
+    {id:'b-mep',icon:'⚙️',label:'Ruang MEP'},
+    {id:'b-genset',icon:'⚡',label:'Genset / Panel Listrik'},
+    {id:'b-gym',icon:'🏋️',label:'Home Gym'},
+    {id:'b-theater',icon:'🎬',label:'Ruang Theater / Cinema'},
+    {id:'b-wine',icon:'🍷',label:'Wine Cellar / Dry Storage'},
+    {id:'b-other',icon:'➕',label:'Lainnya'},
+  ],
+  lt1: [
+    {id:'1-teras',icon:'🏠',label:'Teras / Carport'},
+    {id:'1-tamu',icon:'🛋️',label:'Ruang Tamu'},
+    {id:'1-kel',icon:'📺',label:'Ruang Keluarga'},
+    {id:'1-dapur',icon:'🍳',label:'Dapur'},
+    {id:'1-dapurkotor',icon:'🪣',label:'Dapur Kotor / Pantri'},
+    {id:'1-makan',icon:'🍽️',label:'Ruang Makan'},
+    {id:'1-kt',icon:'🛏️',label:'Kamar Tidur'},
+    {id:'1-km',icon:'🚿',label:'KM / WC'},
+    {id:'1-mushola',icon:'⭐',label:'Mushola'},
+    {id:'1-laundry',icon:'👕',label:'Laundry'},
+    {id:'1-art',icon:'👤',label:'Kamar ART'},
+    {id:'1-kmart',icon:'🚿',label:'KM ART'},
+    {id:'1-office',icon:'💻',label:'Ruang Kerja / Home Office'},
+    {id:'1-other',icon:'➕',label:'Lainnya'},
+  ],
+  lt2: [
+    {id:'2-kt',icon:'🛏️',label:'Kamar Tidur'},
+    {id:'2-ensuite',icon:'🚪',label:'KT En-Suite'},
+    {id:'2-shared',icon:'🚿',label:'Shared Bathroom'},
+    {id:'2-wic',icon:'👗',label:'Walk-in Closet'},
+    {id:'2-kel',icon:'🛋️',label:'Ruang Keluarga'},
+    {id:'2-balkon',icon:'☀️',label:'Balkon'},
+    {id:'2-study',icon:'📚',label:'Ruang Belajar'},
+    {id:'2-office',icon:'💻',label:'Ruang Kerja / Home Office'},
+    {id:'2-play',icon:'🧸',label:'Ruang Bermain Anak'},
+    {id:'2-other',icon:'➕',label:'Lainnya'},
+  ],
+  lt3: [
+    {id:'3-kt',icon:'🛏️',label:'Kamar Tidur'},
+    {id:'3-ensuite',icon:'🚪',label:'KT En-Suite'},
+    {id:'3-kel',icon:'🛋️',label:'Ruang Keluarga'},
+    {id:'3-balkon',icon:'☀️',label:'Balkon'},
+    {id:'3-office',icon:'💻',label:'Ruang Kerja / Home Office'},
+    {id:'3-studio',icon:'🎨',label:'Studio / Hobi'},
+    {id:'3-game',icon:'🎮',label:'Game Room / Mabar'},
+    {id:'3-other',icon:'➕',label:'Lainnya'},
+  ],
+  lt4: [
+    {id:'4-kt',icon:'🛏️',label:'Kamar Tidur'},
+    {id:'4-ensuite',icon:'🚪',label:'KT En-Suite'},
+    {id:'4-kel',icon:'🛋️',label:'Ruang Keluarga'},
+    {id:'4-office',icon:'💻',label:'Ruang Kerja / Home Office'},
+    {id:'4-yoga',icon:'🧘',label:'Ruang Meditasi / Yoga'},
+    {id:'4-other',icon:'➕',label:'Lainnya'},
+  ],
+  rooftop: [
+    {id:'r-gather',icon:'👥',label:'Area Gathering'},
+    {id:'r-bbq',icon:'🔥',label:'BBQ Area'},
+    {id:'r-garden',icon:'🌿',label:'Sky Garden'},
+    {id:'r-laundry',icon:'💨',label:'Jemur Pakaian'},
+    {id:'r-pool',icon:'🏊',label:'Rooftop Pool'},
+    {id:'r-solar',icon:'☀️',label:'Panel Surya / Area Teknikal'},
+    {id:'r-other',icon:'➕',label:'Lainnya'},
+  ]
+};
+
+const fpSelected = {};
+const fpOpen = {};
+const fpExtras = {basement: true, rooftop: false};
+const waterOn = {pool: true, koi: false, wf: false};
+
+function toggleFloorExtra(type) {
+  fpExtras[type] = !fpExtras[type];
+  const btn = document.getElementById('ft-' + type);
+  btn.classList.toggle('on', fpExtras[type]);
+  buildFloorProgram();
+}
+
+function buildFloorProgram() {
+  const n = parseInt(document.getElementById('fp-lantai').value);
+  const container = document.getElementById('floor-cards-container');
+  container.innerHTML = '';
+
+  const floors = [];
+  if (fpExtras.basement) floors.push({id:'basement', label:'Basement', cls:'b', rooms:FP_ROOMS.basement});
+  floors.push({id:'lt1', label:'Lantai 1', cls:'n', rooms:FP_ROOMS.lt1});
+  if (n >= 2) floors.push({id:'lt2', label:'Lantai 2', cls:'n', rooms:FP_ROOMS.lt2});
+  if (n >= 3) floors.push({id:'lt3', label:'Lantai 3', cls:'n', rooms:FP_ROOMS.lt3});
+  if (n >= 4) floors.push({id:'lt4', label:'Lantai 4', cls:'n', rooms:FP_ROOMS.lt4});
+  if (fpExtras.rooftop) floors.push({id:'rooftop', label:'Rooftop', cls:'r', rooms:FP_ROOMS.rooftop});
+
+  floors.forEach(f => {
+    if (fpOpen[f.id] === undefined) fpOpen[f.id] = true;
+    const selCount = f.rooms.filter(r => fpSelected[r.id]).length;
+    const card = document.createElement('div');
+    card.className = 'floor-card';
+    card.innerHTML = `
+      <div class="floor-card-head" onclick="toggleFpFloor('${f.id}')">
+        <div class="floor-badge ${f.cls}">${f.id === 'basement' ? 'B' : f.id === 'rooftop' ? 'R' : f.id.replace('lt','')}</div>
+        <span class="floor-name-txt">${f.label}</span>
+        <span class="floor-room-count" id="fpc-${f.id}">${selCount > 0 ? selCount + ' ruang' : 'belum dipilih'}</span>
+        <span class="floor-chevron ${fpOpen[f.id] ? 'open' : ''}" id="fpchev-${f.id}">▾</span>
+      </div>
+      <div class="floor-card-body" id="fpbody-${f.id}" style="display:${fpOpen[f.id] ? 'block' : 'none'}">
+        <div class="floor-rooms-grid">
+          ${f.rooms.map(r => `<div class="floor-room-chip ${fpSelected[r.id] ? 'sel' : ''}" id="fpchip-${r.id}" onclick="toggleFpRoom('${r.id}','${f.id}')">${r.icon} ${r.label}</div>`).join('')}
+        </div>
+        <textarea class="floor-note" rows="1" placeholder="Catatan ${f.label} (opsional)..." id="fpnote-${f.id}"></textarea>
+      </div>`;
+    container.appendChild(card);
+  });
+  updateProgSummary();
+}
+
+function toggleFpFloor(fid) {
+  fpOpen[fid] = !fpOpen[fid];
+  const body = document.getElementById('fpbody-' + fid);
+  const chev = document.getElementById('fpchev-' + fid);
+  if (body) body.style.display = fpOpen[fid] ? 'block' : 'none';
+  if (chev) chev.classList.toggle('open', fpOpen[fid]);
+}
+
+function toggleFpRoom(rid, fid) {
+  fpSelected[rid] = !fpSelected[rid];
+  const chip = document.getElementById('fpchip-' + rid);
+  if (chip) chip.classList.toggle('sel', fpSelected[rid]);
+  const rooms = FP_ROOMS[fid] || [];
+  const cnt = rooms.filter(r => fpSelected[r.id]).length;
+  const cntEl = document.getElementById('fpc-' + fid);
+  if (cntEl) cntEl.textContent = cnt > 0 ? cnt + ' ruang' : 'belum dipilih';
+  updateProgSummary();
+}
+
+function updateProgSummary() {
+  const n = parseInt(document.getElementById('fp-lantai').value);
+  const levels = n + (fpExtras.basement ? 1 : 0) + (fpExtras.rooftop ? 1 : 0);
+  const rooms = Object.values(fpSelected).filter(Boolean).length;
+  const waters = Object.values(waterOn).filter(Boolean).length;
+  document.getElementById('ps-level').textContent = levels;
+  document.getElementById('ps-rooms').textContent = rooms;
+  document.getElementById('ps-water').textContent = waters;
+  updateWaterFlags();
+}
+
+function toggleWaterFeature(type) {
+  waterOn[type] = !waterOn[type];
+  document.getElementById('wc-' + type).classList.toggle('sel', waterOn[type]);
+  const subId = type === 'pool' ? 'wsub-pool' : type === 'koi' ? 'wsub-koi' : 'wsub-wf';
+  document.getElementById(subId).style.display = waterOn[type] ? 'block' : 'none';
+  updateProgSummary();
+}
+
+function updateWaterFlags() {
+  const flags = [];
+  if (waterOn.pool || fpExtras.basement) {
+    if (waterOn.pool) flags.push({label:'⚠️ MEP kolam renang diperlukan', cls:'water-flag'});
+    if (fpExtras.basement) flags.push({label:'⚠️ Kajian struktur basement diperlukan', cls:'water-flag'});
+  }
+  if (waterOn.koi) flags.push({label:'ℹ️ Sistem filter kolam koi', cls:'water-flag info'});
+  if (waterOn.wf) flags.push({label:'ℹ️ Detail water feature', cls:'water-flag info'});
+  const row = document.getElementById('water-flags');
+  if (row) row.innerHTML = flags.map(f => `<span class="${f.cls}">${f.label}</span>`).join('');
+}
+
+function getFpSummaryText() {
+  const n = parseInt(document.getElementById('fp-lantai').value);
+  const floors = [];
+  if (fpExtras.basement) floors.push({id:'basement', label:'Basement', rooms:FP_ROOMS.basement});
+  floors.push({id:'lt1', label:'Lantai 1', rooms:FP_ROOMS.lt1});
+  if (n >= 2) floors.push({id:'lt2', label:'Lantai 2', rooms:FP_ROOMS.lt2});
+  if (n >= 3) floors.push({id:'lt3', label:'Lantai 3', rooms:FP_ROOMS.lt3});
+  if (n >= 4) floors.push({id:'lt4', label:'Lantai 4', rooms:FP_ROOMS.lt4});
+  if (fpExtras.rooftop) floors.push({id:'rooftop', label:'Rooftop', rooms:FP_ROOMS.rooftop});
+
+  return floors.map(f => {
+    const sel = f.rooms.filter(r => fpSelected[r.id]).map(r => r.label);
+    const note = document.getElementById('fpnote-' + f.id);
+    const noteVal = note ? note.value.trim() : '';
+    return `${f.label}: ${sel.length > 0 ? sel.join(', ') : '—'}${noteVal ? ' ('+noteVal+')' : ''}`;
+  }).join('\n');
+}
+
+function getWaterSummaryText() {
+  const parts = [];
+  if (waterOn.pool) {
+    const uk = document.getElementById('wp-ukuran') ? document.getElementById('wp-ukuran').value.trim() : '';
+    const lok = document.getElementById('wp-lokasi') ? document.getElementById('wp-lokasi').value : '';
+    const tip = document.getElementById('wp-tipe') ? document.getElementById('wp-tipe').value : '';
+    parts.push(`Kolam Renang${uk ? ' ('+uk+'m)' : ''} — ${tip}, ${lok}`);
+  }
+  if (waterOn.koi) {
+    const uk = document.getElementById('wk-ukuran') ? document.getElementById('wk-ukuran').value.trim() : '';
+    parts.push(`Kolam Koi${uk ? ' ('+uk+'m)' : ''}`);
+  }
+  if (waterOn.wf) {
+    const tip = document.getElementById('wwf-tipe') ? document.getElementById('wwf-tipe').value : '';
+    parts.push(`Water Feature — ${tip}`);
+  }
+  return parts.length > 0 ? parts.join(', ') : '—';
+}
+
+// Init program lantai
+buildFloorProgram();
+
+// ── INIT PROGRESS ─────────────────────────────────────────────────────────────
 updateProgress();
 </script>
 </body>
