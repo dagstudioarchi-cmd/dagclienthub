@@ -455,7 +455,28 @@ main{max-width:760px;margin:0 auto;padding:3rem 1.5rem 6rem;}
   <div class="form-section">
     <h4>Paket Architecture Design</h4>
     <p style="font-size:.8rem;color:var(--muted);margin-bottom:1rem;">Harga dihitung per m² luas bangunan. Klik paket untuk melihat detail dan memilih.</p>
-    <div class="pkg-select" id="pkg-arch">
+    <div class="pkg-select" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr));" id="pkg-arch">
+
+      <!-- LITE -->
+      <div class="pkg-opt" data-val="Lite — Rp 35.000/m²" data-price="35000" onclick="selectPkg(this,'pkg-arch')">
+        <div class="po-head">
+          <div class="po-tier">Lite / Skematik</div>
+          <div class="po-price">Rp 35.000</div>
+          <div class="po-unit">per m² luas bangunan</div>
+          <div class="po-badge">Feasibility · Konsultasi awal</div>
+        </div>
+        <div class="po-div"></div>
+        <div class="po-features">
+          <div class="po-feat"><span class="po-icon yes">✓</span>Brief & klarifikasi kebutuhan</div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>Denah skematik (berdimensi)</div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>Tampak Depan & Samping</div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>Site Plan sederhana</div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>Render 3D konsep <strong>(1 view)</strong></div>
+          <div class="po-feat dimmed"><span class="po-icon no">—</span>DED / Detail konstruksi</div>
+          <div class="po-feat dimmed"><span class="po-icon no">—</span>Struktur / MEP / PBG</div>
+          <div class="po-feat"><span class="po-icon star">1M+2m</span>Revisi · 3–5 HK</div>
+        </div>
+      </div>
 
       <!-- BASIC -->
       <div class="pkg-opt" data-val="Basic — Rp 70.000/m²" data-price="70000" onclick="selectPkg(this,'pkg-arch')">
@@ -463,63 +484,60 @@ main{max-width:760px;margin:0 auto;padding:3rem 1.5rem 6rem;}
           <div class="po-tier">Basic</div>
           <div class="po-price">Rp 70.000</div>
           <div class="po-unit">per m² luas bangunan</div>
-          <div class="po-badge">Cocok untuk: konsep awal</div>
+          <div class="po-badge">Rumah 60–200 m²</div>
         </div>
         <div class="po-div"></div>
         <div class="po-features">
-          <div class="po-feat"><span class="po-icon yes">✓</span>Konsultasi awal proyek</div>
-          <div class="po-feat"><span class="po-icon yes">✓</span>Gambar denah konsep</div>
-          <div class="po-feat"><span class="po-icon yes">✓</span>Desain tampak depan</div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>Survey & Persiapan tapak</div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>Preliminary Design lengkap</div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>DED Arsitektur dasar (AR.1–16)</div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>Tampak Depan & Belakang</div>
           <div class="po-feat"><span class="po-icon yes">✓</span>Render eksterior 3D <strong>(2 view)</strong></div>
-          <div class="po-feat dimmed"><span class="po-icon no">—</span>Gambar Kerja / DED</div>
-          <div class="po-feat dimmed"><span class="po-icon no">—</span>Detail konstruksi</div>
+          <div class="po-feat dimmed"><span class="po-icon no">—</span>Struktur / MEP / RAB</div>
           <div class="po-feat dimmed"><span class="po-icon no">—</span>Asistensi IMB / PBG</div>
-          <div class="po-feat dimmed"><span class="po-icon no">—</span>Pengawasan berkala</div>
-          <div class="po-feat"><span class="po-icon star">2×</span>Revisi desain</div>
+          <div class="po-feat"><span class="po-icon star">2M+3m</span>Revisi · 10–14 HK</div>
         </div>
       </div>
 
       <!-- STANDARD -->
-      <div class="pkg-opt" data-val="Standard — Rp 125.000/m²" data-price="125000" onclick="selectPkg(this,'pkg-arch')">
+      <div class="pkg-opt" data-val="Standard — Rp 100.000/m²" data-price="100000" onclick="selectPkg(this,'pkg-arch')">
         <div class="po-head">
           <div class="po-tier">Standard</div>
-          <div class="po-price">Rp 125.000</div>
+          <div class="po-price">Rp 100.000</div>
           <div class="po-unit">per m² luas bangunan</div>
           <div class="po-badge">Paling banyak dipilih</div>
         </div>
         <div class="po-div"></div>
         <div class="po-features">
-          <div class="po-feat"><span class="po-icon yes">✓</span>Konsultasi awal proyek</div>
-          <div class="po-feat"><span class="po-icon yes">✓</span>Gambar denah konsep</div>
-          <div class="po-feat"><span class="po-icon yes">✓</span>Desain tampak <strong>depan & samping</strong></div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>DED Arsitektur lengkap <strong>(26 item)</strong></div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>Tampak 4 sisi + Full detail</div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>DED Struktur <strong>(15 item)</strong></div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>MEP Plumbing & Elektrikal dasar</div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>RAB + BQ + Kurva S</div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>Asistensi IMB / PBG</div>
           <div class="po-feat"><span class="po-icon yes">✓</span>Render eksterior 3D <strong>(4 view)</strong></div>
-          <div class="po-feat"><span class="po-icon yes">✓</span>Gambar Kerja lengkap (DED)</div>
-          <div class="po-feat"><span class="po-icon yes">✓</span>Detail konstruksi standar</div>
-          <div class="po-feat dimmed"><span class="po-icon no">—</span>Asistensi IMB / PBG</div>
-          <div class="po-feat dimmed"><span class="po-icon no">—</span>Pengawasan berkala</div>
-          <div class="po-feat"><span class="po-icon star">4×</span>Revisi desain</div>
+          <div class="po-feat"><span class="po-icon star">4M+5m</span>Revisi · 21–28 HK</div>
         </div>
       </div>
 
       <!-- PREMIUM -->
-      <div class="pkg-opt" data-val="Premium — Rp 175.000/m²" data-price="175000" onclick="selectPkg(this,'pkg-arch')">
+      <div class="pkg-opt" data-val="Premium — Rp 200.000/m²" data-price="200000" onclick="selectPkg(this,'pkg-arch')">
         <div class="po-head">
           <div class="po-tier">Premium</div>
-          <div class="po-price">Rp 175.000</div>
+          <div class="po-price">Rp 200.000</div>
           <div class="po-unit">per m² luas bangunan</div>
-          <div class="po-badge">Paling lengkap & siap bangun</div>
+          <div class="po-badge">All-In · One Contract</div>
         </div>
         <div class="po-div"></div>
         <div class="po-features">
-          <div class="po-feat"><span class="po-icon yes">✓</span>Konsultasi awal proyek</div>
-          <div class="po-feat"><span class="po-icon yes">✓</span>Gambar denah konsep</div>
-          <div class="po-feat"><span class="po-icon yes">✓</span>Desain tampak <strong>semua sisi</strong></div>
-          <div class="po-feat"><span class="po-icon yes">✓</span>Render eksterior 3D <strong>(unlimited)</strong></div>
-          <div class="po-feat"><span class="po-icon yes">✓</span>Gambar Kerja lengkap (DED)</div>
-          <div class="po-feat"><span class="po-icon yes">✓</span>Full detail konstruksi</div>
-          <div class="po-feat"><span class="po-icon yes">✓</span>Asistensi pengurusan IMB / PBG</div>
-          <div class="po-feat"><span class="po-icon yes">✓</span>Pengawasan berkala <strong>(2 kunjungan)</strong></div>
-          <div class="po-feat"><span class="po-icon star">8×</span>Revisi desain</div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>AR + STR + MEP Lengkap</div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>Desain Interior inklusif <strong>(22 item)</strong></div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>RKS Ar / Str / MEP + Draft Kontrak</div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>Asistensi PBG / IMB lengkap</div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>Pengawasan Berkala <strong>(9 item)</strong></div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>As-Built Drawing <strong>(9 item)</strong></div>
+          <div class="po-feat"><span class="po-icon yes">✓</span>Render 3D Unlimited eksterior + interior</div>
+          <div class="po-feat"><span class="po-icon star">6M+8m</span>Revisi · 35–60 HK</div>
         </div>
       </div>
 
@@ -550,7 +568,7 @@ main{max-width:760px;margin:0 auto;padding:3rem 1.5rem 6rem;}
           <div class="po-feat dimmed"><span class="po-icon no">—</span>Bill of Quantity (BOQ)</div>
           <div class="po-feat dimmed"><span class="po-icon no">—</span>Daftar material & merk</div>
           <div class="po-feat dimmed"><span class="po-icon no">—</span>Spesifikasi finishing</div>
-          <div class="po-feat"><span class="po-icon star">2×</span>Revisi desain</div>
+          <div class="po-feat"><span class="po-icon star">1M+2m</span>Revisi · 3–5 HK/ruang</div>
         </div>
       </div>
 
@@ -572,7 +590,7 @@ main{max-width:760px;margin:0 auto;padding:3rem 1.5rem 6rem;}
           <div class="po-feat"><span class="po-icon yes">✓</span>Bill of Quantity (BOQ)</div>
           <div class="po-feat dimmed"><span class="po-icon no">—</span>Daftar material & merk</div>
           <div class="po-feat dimmed"><span class="po-icon no">—</span>Spesifikasi finishing</div>
-          <div class="po-feat"><span class="po-icon star">3×</span>Revisi desain</div>
+          <div class="po-feat"><span class="po-icon star">2M+3m</span>Revisi · 5–7 HK/ruang</div>
         </div>
       </div>
 
@@ -594,7 +612,7 @@ main{max-width:760px;margin:0 auto;padding:3rem 1.5rem 6rem;}
           <div class="po-feat"><span class="po-icon yes">✓</span>Bill of Quantity (BOQ)</div>
           <div class="po-feat"><span class="po-icon yes">✓</span>Daftar material & merk lengkap</div>
           <div class="po-feat"><span class="po-icon yes">✓</span>Spesifikasi finishing detail</div>
-          <div class="po-feat"><span class="po-icon star">7×</span>Revisi desain</div>
+          <div class="po-feat"><span class="po-icon star">3M+4m</span>Revisi · 7–10 HK/ruang</div>
         </div>
       </div>
 
@@ -604,7 +622,7 @@ main{max-width:760px;margin:0 auto;padding:3rem 1.5rem 6rem;}
     <!-- COMBO INFO -->
     <div style="margin-top:1rem;background:var(--ink);border-radius:12px;padding:1rem 1.25rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
       <div style="font-size:.68rem;font-family:'DM Mono',monospace;letter-spacing:.2rem;color:var(--accent);text-transform:uppercase;flex-shrink:0;">Bonus Kombinasi</div>
-      <div style="flex:1;font-size:.78rem;color:rgba(255,255,255,.7);line-height:1.5;">Pesan Architecture <strong style="color:#fff;">+</strong> Interior dalam 1 kontrak → dapat diskon <strong style="color:var(--accent);">5% (Basic) · 10% (Standard) · 20% (Premium)</strong> + bonus revisi / pengawasan.</div>
+      <div style="flex:1;font-size:.78rem;color:rgba(255,255,255,.7);line-height:1.5;">Pesan Architecture <strong style="color:#fff;">+</strong> Interior dalam 1 kontrak → diskon <strong style="color:var(--accent);">5% (Basic) · 10% (Standard) · 20% (Premium)</strong> + bonus 1 Revisi Ekstra atau Pengawasan 1× kunjungan.</div>
     </div>
 
     <!-- CONSTRUCTION DISCOUNT INFO -->
@@ -946,8 +964,8 @@ function buildSummary() {
   const both = arch.price > 0 && intP.price > 0;
   let disc = 0, discLabel = '';
   if (both) {
-    if (arch.price >= 175000 || intP.price >= 1250000) { disc = 0.20; discLabel = '20% (Kombinasi Premium)'; }
-    else if (arch.price >= 125000 || intP.price >= 750000) { disc = 0.10; discLabel = '10% (Kombinasi Standard)'; }
+    if (arch.price >= 200000 || intP.price >= 1250000) { disc = 0.20; discLabel = '20% (Kombinasi Premium)'; }
+    else if (arch.price >= 100000 || intP.price >= 750000) { disc = 0.10; discLabel = '10% (Kombinasi Standard)'; }
     else { disc = 0.05; discLabel = '5% (Kombinasi Basic)'; }
   }
   const sub = (arch.price * area) + (intP.price * roomCount);
@@ -992,8 +1010,8 @@ function sendWA() {
   const both = arch.price > 0 && intP.price > 0;
   let disc = 0, discLabel = '';
   if (both) {
-    if (arch.price >= 175000 || intP.price >= 1250000) { disc = 0.20; discLabel = '20%'; }
-    else if (arch.price >= 125000 || intP.price >= 750000) { disc = 0.10; discLabel = '10%'; }
+    if (arch.price >= 200000 || intP.price >= 1250000) { disc = 0.20; discLabel = '20%'; }
+    else if (arch.price >= 100000 || intP.price >= 750000) { disc = 0.10; discLabel = '10%'; }
     else { disc = 0.05; discLabel = '5%'; }
   }
   const sub = (arch.price * area) + (intP.price * roomCount);
