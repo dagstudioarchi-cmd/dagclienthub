@@ -169,7 +169,7 @@ footer a:hover{opacity:1;}
       <a href="#syarat">Syarat</a>
     </nav>
     <div class="navcta">
-      <a class="btn btn-primary" id="navWaBtn" href="#" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="btn btn-primary" id="navWaBtn" href="#" rel="noopener">WhatsApp</a>
     </div>
   </div>
 </header>
@@ -571,6 +571,18 @@ footer a:hover{opacity:1;}
     <h3 style="margin-top:44px;font-size:15px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;">Checklist Dokumen Sebelum Mulai</h3>
     <div class="tabbar" id="clTabs" style="margin-top:16px;"></div>
     <div class="card" style="padding:24px;" id="clBody"></div>
+    <div class="card" style="padding:22px 24px;margin-top:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+        <div>
+          <b id="clProgressText" style="font-size:14.5px;"></b>
+          <p style="font-size:13px;color:var(--ink-2);margin-top:4px;">Kirim ringkasan status dokumen Anda ke tim DAG Studio via WhatsApp.</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          <input type="text" id="clChecklistName" placeholder="Nama Anda (opsional)" style="border:1px solid var(--line-2);border-radius:999px;padding:10px 16px;font-size:13.5px;font-family:var(--font-b);min-width:180px;">
+          <button class="btn btn-primary" id="btnClSendWa">Kirim Status ke WhatsApp</button>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -582,7 +594,7 @@ footer a:hover{opacity:1;}
     </div>
     <div style="font-size:13.5px;line-height:2;">
       <div style="color:#8f8d8a;text-transform:uppercase;font-size:11.5px;letter-spacing:.08em;margin-bottom:8px;">Kontak</div>
-      <a href="#" id="footWaLink" target="_blank">WhatsApp Konsultasi</a><br>
+      <a href="#" id="footWaLink">WhatsApp Konsultasi</a><br>
       <span style="color:#c9c7c3;">Tasikmalaya, Jawa Barat</span>
     </div>
   </div>
@@ -1233,6 +1245,27 @@ function renderRevisiTable(){
     </tr>`).join('');
 }
 let curCl = 'dokumen'; const clChecked = {};
+function totalClItems(){ let t=0; CL_TABS.forEach(c=>c.groups.forEach(g=>t+=g.items.length)); return t; }
+function checkedClCount(){ return Object.values(clChecked).filter(Boolean).length; }
+function renderClProgress(){
+  const total = totalClItems(), done = checkedClCount();
+  document.getElementById('clProgressText').textContent = `${done} dari ${total} dokumen sudah dicentang`;
+}
+function buildClSummaryText(){
+  const name = document.getElementById('clChecklistName').value.trim();
+  const lines = [`Halo DAG Studio${name ? ', saya '+name : ''}, berikut status kelengkapan dokumen saya:`];
+  CL_TABS.forEach(c=>{
+    lines.push(`\n*${c.label}*`);
+    c.groups.forEach((g,gi)=>{
+      g.items.forEach((label,i)=>{
+        const id = c.key+'_'+gi+'_'+i;
+        lines.push(`${clChecked[id] ? '✅' : '⬜'} ${label}`);
+      });
+    });
+  });
+  lines.push(`\nTotal: ${checkedClCount()}/${totalClItems()} dokumen siap.`);
+  return lines.join('\n');
+}
 function renderClTabs(){
   document.getElementById('clTabs').innerHTML = CL_TABS.map(c=>`<button class="tabbtn ${c.key===curCl?'on':''}" data-k="${c.key}">${c.label}</button>`).join('');
   document.querySelectorAll('#clTabs .tabbtn').forEach(b=>b.addEventListener('click',()=>{ curCl=b.dataset.k; renderClTabs(); }));
@@ -1243,7 +1276,12 @@ function renderClTabs(){
         return `<div class="chk-item" data-id="${id}"><span class="chk-box ${on?'on':''}">${on?'✓':''}</span>${label}</div>`; }).join('')}
     </div>`).join('');
   document.querySelectorAll('.chk-item').forEach(el=>el.addEventListener('click',()=>{ const id=el.dataset.id; clChecked[id]=!clChecked[id]; renderClTabs(); }));
+  renderClProgress();
 }
+document.getElementById('btnClSendWa').addEventListener('click', ()=>{
+  const url = 'https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(buildClSummaryText());
+  window.location.href = url;
+});
 
 /* ============ RD House 360 VIEWER (immersive sphere panorama via three.js) ============ */
 const PANO_SCENES = {
