@@ -111,6 +111,31 @@ nav.links a:hover{background:rgba(255,255,255,.08);color:#fff;}
 .room-chip{display:flex;align-items:center;gap:8px;border:1px solid var(--line-2);border-radius:999px;padding:7px 8px 7px 13px;font-size:13px;background:var(--bg);}
 .room-chip.on{border-color:var(--accent);background:var(--accent-soft);}
 .room-chip input[type=number]{width:44px;border:1px solid var(--line-2);border-radius:6px;padding:3px 4px;font-size:12.5px;text-align:center;}
+.room-detail-head{display:grid;grid-template-columns:1fr 54px 14px 54px 52px 72px 24px;gap:8px;font-size:10.8px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:700;padding-bottom:7px;border-bottom:1px solid var(--line-2);}
+.room-detail-row{display:grid;grid-template-columns:1fr 54px 14px 54px 52px 72px 24px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);}
+.room-detail-row:last-child{border-bottom:none;}
+.room-detail-row input[type=text]{border:1px solid var(--line-2);border-radius:7px;padding:7px 9px;font-size:13px;background:var(--bg);color:var(--ink);width:100%;}
+.room-detail-row input[type=number]{border:1px solid var(--line-2);border-radius:7px;padding:7px 4px;font-size:12.5px;text-align:center;background:var(--bg);color:var(--ink);width:100%;}
+.room-detail-sub{font-size:12px;color:var(--ink-2);text-align:right;white-space:nowrap;}
+.rd-x{background:transparent;border:none;color:var(--ink-3);font-size:16px;cursor:pointer;line-height:1;padding:0;}
+.rd-x:hover{color:#c0392b;}
+@media (max-width:640px){
+  .room-detail-head{display:none;}
+  .room-detail-row{grid-template-columns:1fr 44px 10px 44px 40px 1fr 20px;font-size:12px;}
+}
+.field textarea{width:100%;border:1px solid var(--line-2);border-radius:var(--radius-sm);padding:12px 14px;font-size:14.5px;font-family:var(--font-b);background:var(--bg);color:var(--ink);resize:vertical;}
+.field textarea:focus{outline:2px solid var(--accent);outline-offset:1px;}
+.area-sum{margin-top:20px;padding-top:16px;border-top:1px dashed var(--line);display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;}
+.area-sum div{display:flex;flex-direction:column;gap:3px;}
+.area-sum span{font-size:11.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;}
+.area-sum b{font-family:var(--font-h);font-size:20px;color:var(--ink);}
+.area-sum .hl b{font-size:26px;color:var(--accent-dark);}
+.fac-chip{cursor:pointer;user-select:none;padding:7px 13px;}
+.synced-room-row{display:flex;align-items:center;gap:10px;padding:9px 2px;border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer;}
+.synced-room-row:last-child{border-bottom:none;}
+.synced-room-row input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent);flex:none;}
+.synced-room-row .srr-name{flex:1;}
+.synced-room-row .srr-meta{font-size:12px;color:var(--ink-3);white-space:nowrap;}
 .disc-row{display:grid;grid-template-columns:120px 1fr;gap:10px;}
 .summary-line{display:flex;justify-content:space-between;gap:12px;padding:9px 0;font-size:14.5px;border-bottom:1px dashed var(--line);}
 .summary-line.total{border:none;padding-top:16px;font-family:var(--font-h);font-size:22px;color:var(--accent-dark);}
@@ -452,27 +477,94 @@ footer a:hover{opacity:1;}
         <div class="tabbar" id="scopeBtns"></div>
       </div>
 
-      <div class="card calc-step" id="archStepCard">
-        <h3><span class="step-num">2</span>Architecture Design</h3>
-        <div class="tier-grid" id="archTierGrid"></div>
-        <div class="field" style="margin-top:16px;max-width:260px;">
-          <label>Luas Bangunan Rencana (m²)</label>
-          <input type="number" id="areaInput" min="0" placeholder="cth. 120">
+      <div class="card calc-step" id="briefStepCard">
+        <h3><span class="step-num">2</span>Brief &amp; kebutuhan ruang</h3>
+        <p style="font-size:13px;color:var(--ink-2);margin:-6px 0 18px;line-height:1.65;">Ceritakan keinginan Anda. Data ini menjadi dasar perhitungan luas arsitektur, daftar ruang interior, dan ikut terlampir di dokumen penawaran.</p>
+
+        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;">
+          <div class="field" style="margin-bottom:0;"><label>Tema / gaya bangunan</label>
+            <select id="bTema">
+              <option value="">— Pilih —</option>
+              <option>Modern Minimalis</option><option>Modern Tropis</option><option>Kontemporer</option>
+              <option>Klasik / Mediterania</option><option>Industrial</option><option>Skandinavia</option>
+              <option>Islami Kontemporer</option><option>Japandi</option><option>Belum ditentukan</option>
+            </select></div>
+          <div class="field" style="margin-bottom:0;"><label>Jumlah lantai</label>
+            <select id="bLantai">
+              <option value="">— Pilih —</option><option>1 lantai</option><option>2 lantai</option>
+              <option>3 lantai</option><option>4+ lantai</option><option>Belum ditentukan</option>
+            </select></div>
+          <div class="field" style="margin-bottom:0;"><label>Luas tanah (m²)</label>
+            <input type="number" id="bLuasTanah" min="0" placeholder="cth. 200"></div>
         </div>
+        <div class="field" style="margin-top:14px;"><label>Deskripsi konsep / inspirasi</label>
+          <textarea id="bKonsep" rows="3" placeholder="cth. terasa lapang & terang, banyak bukaan, nuansa kayu & putih, referensi Pinterest/Instagram…"></textarea></div>
+
+        <div style="margin-top:22px;padding-top:18px;border-top:1px dashed var(--line);">
+          <label style="display:block;font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px;">Cara mengisi kebutuhan ruang</label>
+          <div class="tabbar" id="roomModeBtns" style="margin:0 0 18px;"></div>
+        </div>
+
+        <div id="areaLuasPanel">
+          <div class="field" style="max-width:260px;">
+            <label>Luas Bangunan Rencana (m²)</label>
+            <input type="number" id="areaInput" min="0" placeholder="cth. 120">
+          </div>
+          <p style="font-size:12px;color:var(--ink-3);line-height:1.65;">Belum punya daftar ruang? Tidak masalah — untuk desain interior kami siapkan daftar ruang standar rumah tinggal yang bisa Anda pilih.</p>
+        </div>
+
+        <div id="areaDetailPanel" style="display:none;">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:16px;">
+            <div class="field" style="max-width:260px;margin-bottom:0;">
+              <label>Isi cepat daftar ruang</label>
+              <select id="quickFillType"></select>
+            </div>
+            <button class="btn btn-ghost" id="quickFillBtn" type="button" style="height:46px;">Isi Otomatis</button>
+          </div>
+
+          <div id="roomDetailList"></div>
+          <button class="btn btn-ghost" id="addRoomRowBtn" type="button" style="margin-top:12px;padding:9px 18px;">+ Tambah Ruangan</button>
+
+          <div class="area-sum">
+            <div><span>Total luas ruang</span><b id="areaNettoOut">0 m²</b></div>
+            <div><span>+ Koridor &amp; sirkulasi 22%</span><b id="areaKoridorOut">0 m²</b></div>
+            <div class="hl"><span>Luas bangunan (dasar hitung)</span><b id="autoAreaOut">0 m²</b></div>
+          </div>
+          <p style="font-size:12px;color:var(--ink-3);margin-top:10px;line-height:1.65;">Luas = Σ (Panjang × Lebar × Qty) seluruh ruang + 22% untuk koridor, dinding &amp; sirkulasi. Estimasi awal untuk penawaran — luas final mengikuti desain &amp; DED.</p>
+        </div>
+
+        <div style="margin-top:22px;padding-top:18px;border-top:1px dashed var(--line);">
+          <label style="display:block;font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;">Fasilitas / sistem tambahan</label>
+          <div class="room-list" id="facilityChips"></div>
+          <div style="display:flex;gap:8px;margin-top:10px;max-width:420px;">
+            <input type="text" id="facCustomInput" placeholder="Tambah fasilitas lain…" style="flex:1;border:1px solid var(--line-2);border-radius:var(--radius-sm);padding:9px 12px;font-size:13.5px;font-family:var(--font-b);background:var(--bg);color:var(--ink);">
+            <button class="btn btn-ghost" id="facCustomBtn" type="button" style="padding:9px 16px;">+ Tambah</button>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:18px;margin-bottom:0;"><label>Catatan tambahan</label>
+          <textarea id="bCatatan" rows="2" placeholder="cth. target mulai, anggaran indikatif, hal yang harus dihindari…"></textarea></div>
+      </div>
+
+      <div class="card calc-step" id="archStepCard">
+        <h3><span class="step-num">3</span>Architecture Design</h3>
+        <div class="tier-grid" id="archTierGrid"></div>
+        <div class="note-box" id="archAreaInfo" style="margin-top:16px;"></div>
       </div>
 
       <div class="card calc-step" id="intStepCard">
-        <h3><span class="step-num">3</span>Interior Design</h3>
+        <h3><span class="step-num">4</span>Interior Design</h3>
         <div class="tier-grid" id="intTierGrid"></div>
-        <div class="field" style="margin-top:16px;max-width:320px;">
-          <label>Tipe Bangunan (untuk daftar ruangan)</label>
-          <select id="cTypeSelect"><option value="">— Pilih tipe —</option></select>
+        <p id="intRoomNote" style="font-size:12.5px;color:var(--ink-3);margin:18px 0 10px;line-height:1.6;"></p>
+        <div id="intRoomList"></div>
+        <div id="intCustomAdd" style="display:flex;gap:8px;margin-top:12px;max-width:420px;">
+          <input type="text" id="intCustomInput" placeholder="Tambah ruang lain…" style="flex:1;border:1px solid var(--line-2);border-radius:var(--radius-sm);padding:9px 12px;font-size:13.5px;font-family:var(--font-b);background:var(--bg);color:var(--ink);">
+          <button class="btn btn-ghost" id="intCustomBtn" type="button" style="padding:9px 16px;">+ Tambah</button>
         </div>
-        <div id="roomPicker" style="margin-top:16px;"></div>
       </div>
 
       <div class="card calc-step">
-        <h3><span class="step-num">4</span>Data klien &amp; proyek</h3>
+        <h3><span class="step-num">5</span>Data klien &amp; proyek</h3>
         <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
           <div class="field"><label>Nama Klien</label><input type="text" id="clName" placeholder="Nama lengkap"></div>
           <div class="field"><label>No. WhatsApp Klien</label><input type="text" id="clPhone" placeholder="08xxxxxxxxxx"></div>
@@ -481,7 +573,7 @@ footer a:hover{opacity:1;}
       </div>
 
       <div class="card calc-step">
-        <h3><span class="step-num">5</span>Diskon penyesuaian (nego)</h3>
+        <h3><span class="step-num">6</span>Diskon penyesuaian (nego)</h3>
         <p style="font-size:13px;color:var(--ink-2);margin-bottom:14px;">Diskon kombinasi otomatis (bila memilih arsitektur + interior sekaligus) sudah terhitung di ringkasan. Kolom ini untuk penyesuaian tambahan saat negosiasi harga dengan klien.</p>
         <div class="disc-row">
           <select id="discType"><option value="percent">Persen (%)</option><option value="nominal">Nominal (Rp)</option></select>
@@ -490,7 +582,7 @@ footer a:hover{opacity:1;}
       </div>
 
       <div class="card calc-step" style="background:#161616;color:#ffffff;border-color:#161616;">
-        <h3 style="color:#ffffff;"><span class="step-num" style="background:var(--accent);">6</span>Ringkasan Penawaran</h3>
+        <h3 style="color:#ffffff;"><span class="step-num" style="background:var(--accent);">7</span>Ringkasan Penawaran</h3>
         <div id="summaryLines"></div>
         <div class="note-box" id="dpNote" style="background:rgba(255,255,255,.08);color:#fff2e6;"></div>
         <div id="termsSummary" style="margin-top:14px;padding:16px 18px;border-radius:var(--radius-sm);background:rgba(255,255,255,.06);font-size:13px;color:#e9e6e1;line-height:1.75;"></div>
@@ -814,7 +906,16 @@ function renderPaket(){
 }
 
 /* ============ 4. KALKULATOR ============ */
-const calc = { scope:'nol', arch:0, area:'', intp:0, cType:'', rooms:{}, qty:{}, discType:'percent', discVal:0 };
+const KORIDOR_PCT = 22; // tambahan koridor, dinding & sirkulasi untuk luas arsitektur
+const DEFAULT_INT_ROOMS = ['Foyer','Ruang Tamu Semi Outdoor','Ruang Keluarga','Ruang Makan','Dapur Bersih','Kamar Tidur Utama','Walk-in Closet Kamar Utama','Toilet Kamar Utama','Kamar Anak 1','Kamar Anak 2','Sharing Toilet','Laundry & Dry Area','Carport','Garasi','Taman'];
+const FACILITY_OPTS = ['Smart Home System','Panel Surya (Solar Panel)','Water Heater','CCTV Terintegrasi','Sumur Bor / Water Treatment','IPAL / Septic Tank Modern','Kolam Renang','Lift','Taman Vertikal','Otomatisasi Gerbang'];
+
+const calc = { scope:'nol', arch:0, area:'', intp:0, discType:'percent', discVal:0,
+  roomMode:'luas', roomList:[], intSelected:{}, customIntRooms:[], facilities:[] };
+let roomRowSeq = 0;
+const esc = v => String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const roomArea = r => (parseFloat(r.p)||0) * (parseFloat(r.l)||0) * (parseInt(r.qty)||1);
+const r1 = n => Math.round(n*10)/10;
 
 function renderScopeBtns(){
   const opts = [ {k:'interior',l:'Interior saja'}, {k:'nol',l:'Arsitektur'}, {k:'allin',l:'Arsitektur + Interior'} ];
@@ -822,8 +923,8 @@ function renderScopeBtns(){
   document.querySelectorAll('#scopeBtns .tabbtn').forEach(b=>b.addEventListener('click',()=>{
     calc.scope = b.dataset.k;
     if (calc.scope==='interior') calc.arch = 0;
-    if (calc.scope==='nol') { calc.intp = 0; calc.rooms={}; calc.qty={}; }
-    renderScopeBtns(); updateStepVisibility(); renderSummary();
+    if (calc.scope==='nol') calc.intp = 0;
+    renderScopeBtns(); renderArchTiers(); renderIntTiers(); updateStepVisibility(); renderIntRooms(); renderSummary();
   }));
 }
 function updateStepVisibility(){
@@ -842,35 +943,183 @@ function renderIntTiers(){
     <button class="tier-card ${calc.intp==price?'on':''}" data-p="${price}"><b>${d.name}</b><span>${fmt(price)}/ruangan</span></button>`).join('');
   grid.querySelectorAll('.tier-card').forEach(b=>b.addEventListener('click',()=>{ calc.intp = parseInt(b.dataset.p); renderIntTiers(); renderSummary(); }));
 }
-function renderCTypeSelect(){
-  const sel = document.getElementById('cTypeSelect');
-  sel.innerHTML = '<option value="">— Pilih tipe —</option>' + TABS.map(t=>`<option value="${t.key}">${t.label}</option>`).join('');
-  sel.value = calc.cType;
-  sel.addEventListener('change', ()=>{ calc.cType = sel.value; calc.rooms={}; calc.qty={}; renderRoomPicker(); renderSummary(); });
+
+/* ---- Brief: mode kebutuhan ruang (Luas saja / Daftar ruang P×L) ---- */
+function renderRoomModeBtns(){
+  const opts = [ {k:'luas', l:'Luas bangunan saja'}, {k:'detail', l:'Daftar ruang + ukuran (P×L)'} ];
+  document.getElementById('roomModeBtns').innerHTML = opts.map(o=>`<button class="tabbtn ${calc.roomMode===o.k?'on':''}" data-k="${o.k}" type="button">${o.l}</button>`).join('');
+  document.querySelectorAll('#roomModeBtns .tabbtn').forEach(b=>b.addEventListener('click', ()=>{
+    calc.roomMode = b.dataset.k;
+    renderRoomModeBtns(); togglePanels(); updateArea(); renderIntRooms(); renderSummary();
+  }));
 }
-function renderRoomPicker(){
-  const box = document.getElementById('roomPicker');
-  if (!calc.cType){ box.innerHTML = '<p style="font-size:13px;color:var(--ink-3);">Pilih tipe bangunan di atas untuk menampilkan daftar ruangan.</p>'; return; }
-  const cats = ROOM_DATA[calc.cType] || [];
-  box.innerHTML = cats.map((c,ci)=>`
-    <div class="room-cat"><div class="cat-title">${c.cat}</div>
-      <div class="room-list">${c.rooms.map((name,i)=>{
-        const id = calc.cType+'_'+ci+'_'+i; const sel = !!calc.rooms[id]; const qty = calc.qty[id]||1;
-        return `<span class="room-chip ${sel?'on':''}" data-id="${id}"><label style="display:flex;align-items:center;gap:7px;cursor:pointer;"><input type="checkbox" data-toggle="${id}" ${sel?'checked':''} style="accent-color:var(--accent);">${name}</label>${sel?`<input type="number" min="1" max="20" value="${qty}" data-qty="${id}">`:''}</span>`;
-      }).join('')}</div></div>`).join('');
-  box.querySelectorAll('[data-toggle]').forEach(cb=>cb.addEventListener('change',()=>{
-    const id = cb.dataset.toggle; calc.rooms[id] = cb.checked; if (cb.checked && !calc.qty[id]) calc.qty[id]=1;
-    renderRoomPicker(); renderSummary();
+function togglePanels(){
+  document.getElementById('areaLuasPanel').style.display = calc.roomMode==='luas' ? '' : 'none';
+  document.getElementById('areaDetailPanel').style.display = calc.roomMode==='detail' ? '' : 'none';
+}
+function renderQuickFillSelect(){
+  document.getElementById('quickFillType').innerHTML =
+    '<option value="__dag">Standar Rumah Tinggal DAG</option>' +
+    TABS.map(t=>`<option value="${t.key}">Template ${t.label}</option>`).join('');
+}
+function quickFillRooms(){
+  const type = document.getElementById('quickFillType').value;
+  if (calc.roomList.length && !confirm('Ganti daftar ruang yang sudah diisi dengan template ini?')) return;
+  calc.roomList = []; calc.intSelected = {};
+  if (type==='__dag'){
+    DEFAULT_INT_ROOMS.forEach(name=>calc.roomList.push({ id:'rr'+(roomRowSeq++), name, p:'', l:'', qty:1 }));
+  } else {
+    (ROOM_DATA[type]||[]).forEach(c=>c.rooms.forEach(name=>calc.roomList.push({ id:'rr'+(roomRowSeq++), name, p:'', l:'', qty:1 })));
+  }
+  renderRoomDetailList(); renderIntRooms(); renderSummary();
+}
+function addRoomRow(){
+  calc.roomList.push({ id:'rr'+(roomRowSeq++), name:'', p:'', l:'', qty:1 });
+  renderRoomDetailList(); renderIntRooms();
+  const rows = document.querySelectorAll('#roomDetailList .room-detail-row');
+  if (rows.length) rows[rows.length-1].querySelector('input[data-f="name"]').focus();
+}
+function removeRoomRow(id){
+  calc.roomList = calc.roomList.filter(r=>r.id!==id);
+  delete calc.intSelected[id];
+  renderRoomDetailList(); renderIntRooms(); renderSummary();
+}
+function renderRoomDetailList(){
+  const box = document.getElementById('roomDetailList');
+  if (calc.roomList.length===0){
+    box.innerHTML = '<p style="font-size:13px;color:var(--ink-3);">Belum ada ruangan. Gunakan "Isi Otomatis" atau "+ Tambah Ruangan".</p>';
+  } else {
+    box.innerHTML = `<div class="room-detail-head"><span>Nama Ruangan</span><span>P (m)</span><span></span><span>L (m)</span><span>Qty</span><span>Luas</span><span></span></div>`
+      + calc.roomList.map(r=>{
+        const a = roomArea(r);
+        return `<div class="room-detail-row" data-id="${r.id}">
+          <input type="text" data-f="name" value="${esc(r.name)}" placeholder="Nama ruangan">
+          <input type="number" data-f="p" min="0" step="0.1" value="${esc(r.p)}" placeholder="0">
+          <span style="text-align:center;color:var(--ink-3);">×</span>
+          <input type="number" data-f="l" min="0" step="0.1" value="${esc(r.l)}" placeholder="0">
+          <input type="number" data-f="qty" min="1" max="20" value="${r.qty}">
+          <span class="room-detail-sub">${a>0?r1(a)+' m²':'—'}</span>
+          <button type="button" class="rd-x" data-remove="${r.id}" aria-label="Hapus">×</button>
+        </div>`;
+      }).join('');
+    box.querySelectorAll('[data-f]').forEach(inp=>inp.addEventListener('input', ()=>{
+      const row = inp.closest('.room-detail-row');
+      const r = calc.roomList.find(x=>x.id===row.dataset.id); if (!r) return;
+      const f = inp.dataset.f;
+      r[f] = f==='qty' ? Math.max(1, Math.min(20, parseInt(inp.value)||1)) : inp.value;
+      const a = roomArea(r);
+      row.querySelector('.room-detail-sub').textContent = a>0 ? r1(a)+' m²' : '—';
+      updateArea(); renderIntRooms(); renderSummary();
+    }));
+    box.querySelectorAll('[data-remove]').forEach(btn=>btn.addEventListener('click', ()=>removeRoomRow(btn.dataset.remove)));
+  }
+  updateArea();
+}
+function areaBreakdown(){
+  const netto = calc.roomList.reduce((s,r)=>s+roomArea(r),0);
+  const koridor = netto * KORIDOR_PCT/100;
+  return { netto:r1(netto), koridor:r1(koridor), total:r1(netto+koridor) };
+}
+function updateArea(){
+  const b = areaBreakdown();
+  calc.area = calc.roomMode==='detail' ? b.total : (document.getElementById('areaInput').value || '');
+  document.getElementById('areaNettoOut').textContent = b.netto + ' m²';
+  document.getElementById('areaKoridorOut').textContent = b.koridor + ' m²';
+  document.getElementById('autoAreaOut').textContent = b.total + ' m²';
+  const info = document.getElementById('archAreaInfo');
+  const a = parseFloat(calc.area)||0;
+  if (!a) info.textContent = 'Isi luas bangunan atau daftar ruang di Step 2 untuk menghitung biaya arsitektur.';
+  else if (calc.roomMode==='detail') info.textContent = `Dasar perhitungan: ${a} m² — dari daftar ruang (${b.netto} m²) + koridor & sirkulasi ${KORIDOR_PCT}% (${b.koridor} m²).`;
+  else info.textContent = `Dasar perhitungan: ${a} m² — luas bangunan yang Anda isi di Step 2.`;
+}
+
+/* ---- Fasilitas tambahan ---- */
+function renderFacilities(){
+  const all = FACILITY_OPTS.concat(calc.facilities.filter(f=>FACILITY_OPTS.indexOf(f)<0));
+  const box = document.getElementById('facilityChips');
+  box.innerHTML = all.map(f=>`<span class="room-chip fac-chip ${calc.facilities.indexOf(f)>-1?'on':''}" data-fac="${esc(f)}">${esc(f)}</span>`).join('');
+  box.querySelectorAll('[data-fac]').forEach(ch=>ch.addEventListener('click', ()=>{
+    const f = ch.dataset.fac; const i = calc.facilities.indexOf(f);
+    if (i>-1) calc.facilities.splice(i,1); else calc.facilities.push(f);
+    renderFacilities();
   }));
-  box.querySelectorAll('[data-qty]').forEach(inp=>inp.addEventListener('input',()=>{
-    const id = inp.dataset.qty; calc.qty[id] = Math.max(1, Math.min(20, parseInt(inp.value)||1)); renderSummary();
+}
+function addCustomFacility(){
+  const inp = document.getElementById('facCustomInput'); const v = inp.value.trim();
+  if (!v) return;
+  if (calc.facilities.indexOf(v)<0) calc.facilities.push(v);
+  inp.value=''; renderFacilities();
+}
+
+/* ---- Interior: daftar ruang (terfilter dari brief / default DAG) ---- */
+function interiorRooms(){
+  const named = calc.roomList.filter(r=>(r.name||'').trim());
+  if (calc.roomMode==='detail' && named.length){
+    return named.map(r=>({ id:r.id, name:r.name.trim(), qty:parseInt(r.qty)||1, area:roomArea(r), src:'brief' }));
+  }
+  return DEFAULT_INT_ROOMS.map((name,i)=>({ id:'def_'+i, name, qty:1, area:0, src:'default' }))
+    .concat(calc.customIntRooms.map(c=>({ id:c.id, name:c.name, qty:1, area:0, src:'custom' })));
+}
+function isIntSelected(r){
+  if (r.src==='default') return calc.intSelected[r.id]===true;
+  return calc.intSelected[r.id]!==false; // ruang dari brief & tambahan custom: tercentang otomatis
+}
+function renderIntRooms(){
+  const rooms = interiorRooms();
+  const fromBrief = rooms.length && rooms[0].src==='brief';
+  document.getElementById('intRoomNote').innerHTML = fromBrief
+    ? 'Daftar ruang di bawah <b>otomatis diambil dari kebutuhan ruang di Step 2</b>. Hapus centang ruang yang tidak perlu desain interior (mis. carport/taman).'
+    : 'Pilih ruang yang akan dibuatkan desain interiornya. Daftar ini standar rumah tinggal DAG — isi "Daftar ruang + ukuran" di Step 2 bila ingin daftar sesuai kebutuhan Anda.';
+  document.getElementById('intCustomAdd').style.display = fromBrief ? 'none' : 'flex';
+  const box = document.getElementById('intRoomList');
+  box.innerHTML = rooms.map(r=>`<label class="synced-room-row"><input type="checkbox" data-sid="${r.id}" ${isIntSelected(r)?'checked':''}>
+      <span class="srr-name">${esc(r.name)}</span>
+      <span class="srr-meta">${r.src==='brief' ? r.qty+'×'+(r.area>0?' · '+r1(r.area)+' m²':'') : (r.src==='custom'?'tambahan':'')}</span></label>`).join('');
+  box.querySelectorAll('[data-sid]').forEach(cb=>cb.addEventListener('change', ()=>{
+    calc.intSelected[cb.dataset.sid] = cb.checked; renderSummary();
   }));
+}
+function addCustomIntRoom(){
+  const inp = document.getElementById('intCustomInput'); const v = inp.value.trim();
+  if (!v) return;
+  calc.customIntRooms.push({ id:'ci'+(roomRowSeq++), name:v });
+  inp.value=''; renderIntRooms(); renderSummary();
+}
+function selectedIntRooms(){ return interiorRooms().filter(isIntSelected); }
+
+/* ---- Data brief terstruktur (untuk PDF & Brief Analyzer) ---- */
+function briefData(){
+  const val = id => (document.getElementById(id)||{}).value || '';
+  const b = areaBreakdown();
+  return {
+    schema: 'dag-brief-v1',
+    sumber: 'DAG Client Hub',
+    noPenawaran: calc._quoteNo || null,
+    dibuat: new Date().toISOString(),
+    klien: { nama: val('clName'), wa: val('clPhone'), proyek: val('clProject') },
+    lingkup: ({interior:'Interior saja', nol:'Arsitektur', allin:'Arsitektur + Interior'})[calc.scope],
+    konsep: { tema: val('bTema'), deskripsi: val('bKonsep').trim() },
+    jumlahLantai: val('bLantai'),
+    luasTanah: parseFloat(val('bLuasTanah')) || null,
+    modeRuang: calc.roomMode==='detail' ? 'daftar_ruang' : 'luas_saja',
+    luasBangunan: parseFloat(calc.area) || 0,
+    rincianLuas: calc.roomMode==='detail' ? { luasRuang:b.netto, koridorPersen:KORIDOR_PCT, koridor:b.koridor, total:b.total } : null,
+    daftarRuang: calc.roomMode==='detail' ? calc.roomList.filter(r=>(r.name||'').trim()).map(r=>({ nama:r.name.trim(), panjang:parseFloat(r.p)||null, lebar:parseFloat(r.l)||null, qty:parseInt(r.qty)||1, luas:r1(roomArea(r)) })) : [],
+    ruangInterior: calc.intp>0 ? selectedIntRooms().map(r=>({ nama:r.name, qty:r.qty })) : [],
+    fasilitas: calc.facilities.slice(),
+    catatan: val('bCatatan').trim(),
+    paket: {
+      arsitektur: calc.arch>0 ? ARCH_DELIV[calc.arch].name : null,
+      interior: calc.intp>0 ? INT_DELIV[calc.intp].name : null
+    }
+  };
 }
 
 function computeTotals(){
   const area = parseFloat(calc.area) || 0;
   const archCost = calc.arch * area;
-  let totalRooms = 0; Object.keys(calc.rooms).forEach(k=>{ if (calc.rooms[k]) totalRooms += (calc.qty[k]||1); });
+  let totalRooms = 0;
+  if (calc.intp>0) selectedIntRooms().forEach(r=>{ totalRooms += r.qty; });
   const intCost = calc.intp * totalRooms;
   const hasCombo = calc.arch>0 && calc.intp>0;
   let comboPct = 0, comboLabel = '';
@@ -990,6 +1239,80 @@ function drawLetterhead(doc, title){
     img.src = url;
   }).catch(()=>{});
 })();
+/* ---- Lampiran: Ringkasan Brief Klien (halaman tambahan PDF) ---- */
+function appendBriefPage(doc, qno){
+  const d = briefData();
+  doc.addPage();
+  drawLetterhead(doc, 'LAMPIRAN - RINGKASAN BRIEF & KEBUTUHAN RUANG');
+  let y = 58;
+  const ensure = h => { if (y + h > 282){ doc.addPage(); y = 20; } };
+  const kv = (k, v) => {
+    const wl = doc.splitTextToSize(String(v || '-'), 128);
+    ensure(wl.length*5 + 1);
+    doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(60,60,60); doc.text(k, 16, y);
+    doc.setFont('helvetica','normal'); doc.setTextColor(40,40,40); doc.text(wl, 66, y);
+    y += wl.length*5 + 1.5;
+  };
+  const head = title => { ensure(12); y += 3; doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(255,106,0); doc.text(title, 16, y); y += 6; };
+
+  doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(120,120,120);
+  doc.text(`Lampiran dari No. Penawaran: ${qno}`, 16, y); y += 8;
+
+  head('KONSEP & DATA DASAR');
+  kv('Klien', d.klien.nama); kv('Proyek', d.klien.proyek); kv('Lingkup', d.lingkup);
+  kv('Tema / gaya', d.konsep.tema); kv('Deskripsi konsep', d.konsep.deskripsi);
+  kv('Jumlah lantai', d.jumlahLantai); kv('Luas tanah', d.luasTanah ? d.luasTanah+' m²' : '-');
+  kv('Luas bangunan', d.luasBangunan ? d.luasBangunan+' m²' + (d.rincianLuas ? ` (ruang ${d.rincianLuas.luasRuang} m² + koridor ${KORIDOR_PCT}% ${d.rincianLuas.koridor} m²)` : ' (diisi langsung oleh klien)') : '-');
+
+  if (d.daftarRuang.length){
+    head('DAFTAR KEBUTUHAN RUANG');
+    ensure(20);
+    const selNames = d.ruangInterior.map(r=>r.nama);
+    doc.autoTable({
+      startY: y,
+      head: [['No','Ruang','P x L (m)','Qty','Luas (m²)'].concat(calc.intp>0?['Interior']:[])],
+      body: d.daftarRuang.map((r,i)=>[i+1, r.nama, (r.panjang&&r.lebar)? `${r.panjang} x ${r.lebar}` : '-', r.qty, r.luas||'-'].concat(calc.intp>0?[selNames.indexOf(r.nama)>-1?'Ya':'-']:[])),
+      foot: [['','Total luas ruang','','',d.rincianLuas.luasRuang].concat(calc.intp>0?['']:[]),
+             ['',`Koridor & sirkulasi ${KORIDOR_PCT}%`,'','',d.rincianLuas.koridor].concat(calc.intp>0?['']:[]),
+             ['','Luas bangunan (dasar hitung)','','',d.rincianLuas.total].concat(calc.intp>0?['']:[])],
+      theme:'plain', styles:{fontSize:9, cellPadding:2.2, textColor:[40,40,40]},
+      headStyles:{fillColor:[20,20,20], textColor:255, fontStyle:'bold'},
+      footStyles:{fontStyle:'bold', textColor:[40,40,40]},
+      showFoot:'lastPage', showHead:'everyPage',
+      columnStyles:{0:{cellWidth:10},3:{halign:'center'},4:{halign:'right'}},
+      margin:{left:16, right:16},
+    });
+    y = doc.lastAutoTable.finalY + 6;
+  }
+
+  if (calc.intp>0 && !d.daftarRuang.length){
+    head('RUANG DESAIN INTERIOR');
+    kv('Ruang dipilih', d.ruangInterior.length ? d.ruangInterior.map(r=>r.nama).join(', ') : '-');
+  }
+
+  head('FASILITAS & CATATAN');
+  kv('Fasilitas tambahan', d.fasilitas.length ? d.fasilitas.join(', ') : '-');
+  kv('Catatan', d.catatan);
+
+  ensure(12); y += 4;
+  doc.setFont('helvetica','italic'); doc.setFontSize(8.5); doc.setTextColor(130,130,130);
+  doc.text(doc.splitTextToSize('Luas dan daftar ruang merupakan estimasi awal berdasarkan brief klien; luas final mengikuti hasil desain & DED yang disetujui.', 178), 16, y);
+}
+/* ---- Data brief tertanam di PDF (dibaca otomatis oleh Brief Analyzer) ---- */
+const BRIEF_PDF_TAG = 'DAGBRIEF1:';
+function embedBriefInPdf(doc, qno){
+  try {
+    const d = briefData(); d.noPenawaran = qno;
+    const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(d))));
+    doc.setProperties({
+      title: `Penawaran DAG Studio ${qno}`,
+      subject: 'Penawaran Harga Desain — DAG Studio',
+      author: 'DAG Studio',
+      creator: 'DAG Client Hub',
+      keywords: BRIEF_PDF_TAG + b64
+    });
+  } catch(e){}
+}
 function buildQuoteDoc(){
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit:'mm', format:'a4' });
@@ -1057,6 +1380,8 @@ function buildQuoteDoc(){
   doc.text(clName, 16, y+25);
   doc.text('a.n. Geni Rafsanjani, ST — DAG Studio', 120, y+25);
 
+  appendBriefPage(doc, qno);
+  embedBriefInPdf(doc, qno);
   return { doc, qno, total: t.total };
 }
 
@@ -1113,6 +1438,8 @@ function buildApprovalDoc(sigDataUrl){
   doc.text('a.n. Geni Rafsanjani, ST', 120, y+5);
   doc.text('Principal — DAG Studio', 120, y+10);
 
+  appendBriefPage(doc, qno);
+  embedBriefInPdf(doc, qno);
   return { doc, qno, total: t.total };
 }
 
@@ -1208,7 +1535,13 @@ document.getElementById('btnApprove').addEventListener('click', async ()=>{
 });
 
 /* ============ discount / client inputs live binding ============ */
-document.getElementById('areaInput').addEventListener('input', e=>{ calc.area = e.target.value; renderSummary(); });
+document.getElementById('areaInput').addEventListener('input', ()=>{ updateArea(); renderSummary(); });
+document.getElementById('quickFillBtn').addEventListener('click', quickFillRooms);
+document.getElementById('addRoomRowBtn').addEventListener('click', addRoomRow);
+document.getElementById('facCustomBtn').addEventListener('click', addCustomFacility);
+document.getElementById('facCustomInput').addEventListener('keydown', e=>{ if (e.key==='Enter'){ e.preventDefault(); addCustomFacility(); } });
+document.getElementById('intCustomBtn').addEventListener('click', addCustomIntRoom);
+document.getElementById('intCustomInput').addEventListener('keydown', e=>{ if (e.key==='Enter'){ e.preventDefault(); addCustomIntRoom(); } });
 document.getElementById('discType').addEventListener('change', e=>{ calc.discType = e.target.value; renderSummary(); });
 document.getElementById('discVal').addEventListener('input', e=>{ calc.discVal = e.target.value; renderSummary(); });
 document.getElementById('clProject').addEventListener('input', refreshApprovalSummary);
@@ -1369,7 +1702,8 @@ function renderPano360(){
 renderPathGrid(); renderPathDetail();
 renderPano360();
 renderLayanan(); renderPaket();
-renderScopeBtns(); updateStepVisibility(); renderArchTiers(); renderIntTiers(); renderCTypeSelect(); renderRoomPicker(); renderSummary();
+renderScopeBtns(); updateStepVisibility(); renderArchTiers(); renderIntTiers();
+renderRoomModeBtns(); togglePanels(); renderQuickFillSelect(); renderRoomDetailList(); renderFacilities(); renderIntRooms(); renderSummary();
 renderAlur(); renderTermGrid(); renderRevisiTable(); renderClTabs();
 })();
 </script>
