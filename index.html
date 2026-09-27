@@ -4,8 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DAG Studio — Client Hub</title>
-<link rel="apple-touch-icon" href="icon-client-hub.png">
-<link rel="icon" href="icon-client-hub.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -123,13 +121,23 @@ nav.links a:hover{background:rgba(255,255,255,.08);color:#fff;}
 .rd-x:hover{color:#c0392b;}
 @media (max-width:640px){
   .room-detail-head{display:none;}
-  .room-detail-row{grid-template-columns:44px 10px 44px 40px 1fr 22px;gap:6px 8px;padding:10px 0;}
-  .room-detail-row input[data-f="name"]{grid-column:1 / -1;font-size:15px;padding:9px 10px;order:-1;}
-  .room-detail-row input[type=number]{font-size:13px;padding:8px 4px;}
-  .room-detail-row .room-detail-sub{font-size:12.5px;}
+  .room-detail-row{grid-template-columns:1fr 44px 10px 44px 40px 1fr 20px;font-size:12px;}
 }
 .field textarea{width:100%;border:1px solid var(--line-2);border-radius:var(--radius-sm);padding:12px 14px;font-size:14.5px;font-family:var(--font-b);background:var(--bg);color:var(--ink);resize:vertical;}
 .field textarea:focus{outline:2px solid var(--accent);outline-offset:1px;}
+.kdb-box{margin-top:20px;padding:18px 18px 16px;border:1px solid #f3c99a;background:#fff8f1;border-radius:var(--radius-sm);}
+.kdb-head{font-family:var(--font-h);font-weight:600;font-size:15px;color:var(--ink);margin-bottom:6px;}
+.kdb-txt{font-size:13px;color:var(--ink-2);line-height:1.7;margin:0;}
+.kdb-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
+@media (max-width:640px){.kdb-opts{grid-template-columns:1fr;}}
+.kdb-opt{display:flex;gap:10px;align-items:flex-start;padding:13px 14px;border:1.5px solid var(--line-2);border-radius:var(--radius-sm);background:#fff;cursor:pointer;transition:border-color .15s,box-shadow .15s;}
+.kdb-opt:hover{border-color:#f3c99a;}
+.kdb-opt.on{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,106,0,.12);}
+.kdb-opt input{accent-color:var(--accent);margin-top:3px;flex:none;}
+.kdb-opt b{font-size:14px;color:var(--ink);}
+.kdb-opt p{font-size:12.5px;color:var(--ink-2);line-height:1.65;margin:5px 0 0;}
+.kdb-opt .con{color:#9a4b12;}
+.kdb-rec{display:inline-block;margin-left:6px;font-size:10.5px;font-weight:600;letter-spacing:.03em;color:#fff;background:var(--accent);border-radius:999px;padding:2px 8px;vertical-align:1px;}
 .area-sum{margin-top:20px;padding-top:16px;border-top:1px dashed var(--line);display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;}
 .area-sum div{display:flex;flex-direction:column;gap:3px;}
 .area-sum span{font-size:11.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;}
@@ -538,6 +546,8 @@ footer a:hover{opacity:1;}
           <p style="font-size:12px;color:var(--ink-3);margin-top:10px;line-height:1.65;">Luas = Σ (Panjang × Lebar × Qty) seluruh ruang + 22% untuk koridor, dinding &amp; sirkulasi. Estimasi awal untuk penawaran — luas final mengikuti desain &amp; DED.</p>
         </div>
 
+        <div id="kdbBox" class="kdb-box" style="display:none;"></div>
+
         <div style="margin-top:22px;padding-top:18px;border-top:1px dashed var(--line);">
           <label style="display:block;font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;">Fasilitas / sistem tambahan</label>
           <div class="room-list" id="facilityChips"></div>
@@ -915,7 +925,8 @@ const KORIDOR_PCT = 22; // tambahan koridor, dinding & sirkulasi untuk luas arsi
 const DEFAULT_INT_ROOMS = ['Foyer','Ruang Tamu Semi Outdoor','Ruang Keluarga','Ruang Makan','Dapur Bersih','Kamar Tidur Utama','Walk-in Closet Kamar Utama','Toilet Kamar Utama','Kamar Anak 1','Kamar Anak 2','Sharing Toilet','Laundry & Dry Area','Carport','Garasi','Taman'];
 const FACILITY_OPTS = ['Smart Home System','Panel Surya (Solar Panel)','Water Heater','CCTV Terintegrasi','Sumur Bor / Water Treatment','IPAL / Septic Tank Modern','Kolam Renang','Lift','Taman Vertikal','Otomatisasi Gerbang'];
 
-const calc = { scope:'nol', arch:0, area:'', intp:0, discType:'percent', discVal:0,
+const KDB_MAX = 0.70; // batas tapak DAG: bangunan maks 70% lahan, 30% ruang terbuka
+const calc = { kdbPilihan:'ikuti', scope:'nol', arch:0, area:'', intp:0, discType:'percent', discVal:0,
   roomMode:'luas', roomList:[], intSelected:{}, customIntRooms:[], facilities:[] };
 let roomRowSeq = 0;
 const esc = v => String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -1036,6 +1047,48 @@ function updateArea(){
   if (!a) info.textContent = 'Isi luas bangunan atau daftar ruang di Step 2 untuk menghitung biaya arsitektur.';
   else if (calc.roomMode==='detail') info.textContent = `Dasar perhitungan: ${a} m² — dari daftar ruang (${b.netto} m²) + koridor & sirkulasi ${KORIDOR_PCT}% (${b.koridor} m²).`;
   else info.textContent = `Dasar perhitungan: ${a} m² — luas bangunan yang Anda isi di Step 2.`;
+  renderKDB();
+}
+
+/* ---- Batas tapak 70:30 (KDB) ---- */
+function lantaiAngka(v){ const m = String(v || '').match(/\d+/); return m ? parseInt(m[0], 10) : 1; }
+function kdbStatus(){
+  const LB = parseFloat(calc.area) || 0, LT = parseFloat(document.getElementById('bLuasTanah').value) || 0;
+  const sel = document.getElementById('bLantai').value;
+  if (!LB || !LT) return null;
+  const lt = lantaiAngka(sel), dasar = LB / lt, kdb = dasar / LT;
+  const tentu = /\d/.test(sel);
+  if (kdb <= KDB_MAX + 1e-9) return { lebih:false, lt, tentu, dasar, kdb, LT, LB };
+  const ideal = Math.max(lt + 1, Math.ceil(LB / (KDB_MAX * LT) - 1e-9));
+  const dasarIdeal = LB / ideal;
+  return { lebih:true, lt, tentu, dasar, kdb, LT, LB, ideal, dasarIdeal, kdbIdeal: dasarIdeal / LT, batas: KDB_MAX * LT };
+}
+function renderKDB(){
+  const box = document.getElementById('kdbBox');
+  const r = kdbStatus();
+  if (!r || !r.lebih){ box.style.display = 'none'; box.innerHTML = ''; return; }
+  const f = n => (Math.round(n * 10) / 10).toString().replace('.', ',');
+  const pct = n => (Math.round(n * 1000) / 10).toString().replace('.', ',') + '%';
+  const tetap = calc.kdbPilihan === 'tetap';
+  box.style.display = '';
+  box.innerHTML = `
+    <div class="kdb-head">⚠ Luas bangunan melebihi batas ideal tapak</div>
+    <p class="kdb-txt">${r.tentu ? `Dengan <b>${r.lt} lantai</b>` : `Jika dibangun <b>1 lantai</b>`}, lantai dasar ±<b>${f(r.dasar)} m²</b> memakai <b>${pct(r.kdb)}</b> dari lahan ${f(r.LT)} m².
+    Standar DAG: bangunan maksimal <b>70%</b> lahan (±${f(r.batas)} m²), <b>30%</b> sisanya ruang terbuka untuk taman, resapan air, serta sirkulasi udara &amp; cahaya alami. Silakan pilih:</p>
+    <div class="kdb-opts">
+      <label class="kdb-opt ${tetap ? '' : 'on'}"><input type="radio" name="kdbPilih" value="ikuti" ${tetap ? '' : 'checked'}>
+        <div><b>Ikuti ideal — ${r.ideal} lantai</b><span class="kdb-rec">Disarankan</span>
+        <p>Lantai dasar ±${f(r.dasarIdeal)} m² (${pct(r.kdbIdeal)} lahan). Tersisa ruang terbuka untuk taman, bukaan jendela, dan ventilasi silang — rumah lebih terang &amp; sejuk alami.</p></div></label>
+      <label class="kdb-opt ${tetap ? 'on' : ''}"><input type="radio" name="kdbPilih" value="tetap" ${tetap ? 'checked' : ''}>
+        <div><b>Tetap ${r.lt} lantai</b>
+        <p class="con">Kekurangan: sirkulasi udara &amp; cahaya alami kurang optimal. Ruang terbuka di sekitar bangunan sempit, sehingga ruang bagian tengah cenderung gelap &amp; panas dan lebih bergantung pada lampu &amp; AC. Taman dan resapan air juga minim — perlu dibantu void, skylight, atau inner court.</p></div></label>
+    </div>`;
+  box.querySelectorAll('input[name=kdbPilih]').forEach(i => i.addEventListener('change', () => { calc.kdbPilihan = i.value; renderKDB(); }));
+}
+function lantaiEfektif(){
+  const r = kdbStatus(), sel = document.getElementById('bLantai').value;
+  if (r && r.lebih && calc.kdbPilihan !== 'tetap') return r.ideal + ' lantai';
+  return sel;
 }
 
 /* ---- Fasilitas tambahan ---- */
@@ -1104,7 +1157,15 @@ function briefData(){
     klien: { nama: val('clName'), wa: val('clPhone'), proyek: val('clProject') },
     lingkup: ({interior:'Interior saja', nol:'Arsitektur', allin:'Arsitektur + Interior'})[calc.scope],
     konsep: { tema: val('bTema'), deskripsi: val('bKonsep').trim() },
-    jumlahLantai: val('bLantai'),
+    jumlahLantai: lantaiEfektif(),
+    tapak: (function(){
+      const r = kdbStatus(); if (!r) return null;
+      return { batasPersen: Math.round(KDB_MAX * 100), lantaiDiminta: val('bLantai') || '-', melebihi: r.lebih,
+        pilihan: r.lebih ? (calc.kdbPilihan === 'tetap' ? 'tetap' : 'ikuti') : null,
+        lantaiIdeal: r.lebih ? r.ideal : r.lt,
+        persenLahanDiminta: Math.round(r.kdb * 1000) / 10,
+        persenLahanFinal: Math.round((r.lebih && calc.kdbPilihan !== 'tetap' ? r.kdbIdeal : r.kdb) * 1000) / 10 };
+    })(),
     luasTanah: parseFloat(val('bLuasTanah')) || null,
     modeRuang: calc.roomMode==='detail' ? 'daftar_ruang' : 'luas_saja',
     luasBangunan: parseFloat(calc.area) || 0,
@@ -1267,6 +1328,12 @@ function appendBriefPage(doc, qno){
   kv('Klien', d.klien.nama); kv('Proyek', d.klien.proyek); kv('Lingkup', d.lingkup);
   kv('Tema / gaya', d.konsep.tema); kv('Deskripsi konsep', d.konsep.deskripsi);
   kv('Jumlah lantai', d.jumlahLantai); kv('Luas tanah', d.luasTanah ? d.luasTanah+' m²' : '-');
+  if (d.tapak && d.tapak.melebihi){
+    const pctTxt = n => String(n).replace('.', ',') + '%';
+    kv('Batas tapak 70:30', d.tapak.pilihan === 'tetap'
+      ? `Klien memilih TETAP ${d.tapak.lantaiDiminta} walau lantai dasar ${pctTxt(d.tapak.persenLahanDiminta)} lahan (batas 70%). Konsekuensi: sirkulasi udara & cahaya alami kurang optimal - perlu void/skylight/inner court.`
+      : `Disesuaikan dari ${d.tapak.lantaiDiminta} menjadi ${d.jumlahLantai} (lantai dasar ${pctTxt(d.tapak.persenLahanFinal)} lahan, sisa ruang terbuka untuk taman & sirkulasi).`);
+  }
   kv('Luas bangunan', d.luasBangunan ? d.luasBangunan+' m²' + (d.rincianLuas ? ` (ruang ${d.rincianLuas.luasRuang} m² + koridor ${KORIDOR_PCT}% ${d.rincianLuas.koridor} m²)` : ' (diisi langsung oleh klien)') : '-');
 
   if (d.daftarRuang.length){
@@ -1541,6 +1608,8 @@ document.getElementById('btnApprove').addEventListener('click', async ()=>{
 
 /* ============ discount / client inputs live binding ============ */
 document.getElementById('areaInput').addEventListener('input', ()=>{ updateArea(); renderSummary(); });
+document.getElementById('bLantai').addEventListener('change', renderKDB);
+document.getElementById('bLuasTanah').addEventListener('input', renderKDB);
 document.getElementById('quickFillBtn').addEventListener('click', quickFillRooms);
 document.getElementById('addRoomRowBtn').addEventListener('click', addRoomRow);
 document.getElementById('facCustomBtn').addEventListener('click', addCustomFacility);
