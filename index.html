@@ -958,7 +958,8 @@ const KORIDOR_PCT = 22; // tambahan koridor, dinding & sirkulasi untuk luas arsi
 const DEFAULT_INT_ROOMS = ['Foyer','Ruang Tamu Semi Outdoor','Ruang Keluarga','Ruang Makan','Dapur Bersih','Kamar Tidur Utama','Walk-in Closet Kamar Utama','Toilet Kamar Utama','Kamar Anak 1','Kamar Anak 2','Sharing Toilet','Laundry & Dry Area','Carport','Garasi','Taman'];
 const FACILITY_OPTS = ['Smart Home System','Panel Surya (Solar Panel)','Water Heater','CCTV Terintegrasi','Sumur Bor / Water Treatment','IPAL / Septic Tank Modern','Kolam Renang','Lift','Taman Vertikal','Otomatisasi Gerbang'];
 
-const KDB_MAX = 0.70; // batas tapak DAG: bangunan maks 70% lahan, 30% ruang terbuka
+const KDB_MAX = 0.70;   // batas tapak DAG: maks 70% bangunan : 30% ruang terbuka (RTH)
+const KDB_IDEAL = 0.60; // ideal 60% bangunan : 40% ruang terbuka
 const calc = { kdbPilihan:'ikuti', scope:'nol', arch:0, area:'', intp:0, discType:'percent', discVal:0,
   roomMode:'luas', roomList:[], intSelected:{}, customIntRooms:[], facilities:[] };
 let roomRowSeq = 0;
@@ -1108,16 +1109,25 @@ function renderLahanNote(){
 
 /* ---- Batas tapak 70:30 (KDB) ---- */
 function lantaiAngka(v){ const m = String(v || '').match(/\d+/); return m ? parseInt(m[0], 10) : 1; }
+function dasarIdealHub(LB, LT, n){
+  if (n <= 1) return LB;
+  return Math.max(LB / n, Math.min(KDB_IDEAL * LT, 0.75 * LB));
+}
 function kdbStatus(){
   const LB = parseFloat(calc.area) || 0, LT = parseFloat(document.getElementById('bLuasTanah').value) || 0;
   const sel = document.getElementById('bLantai').value;
   if (!LB || !LT) return null;
   const lt = lantaiAngka(sel), dasar = LB / lt, kdb = dasar / LT;
   const tentu = /\d/.test(sel);
-  if (kdb <= KDB_MAX + 1e-9) return { lebih:false, lt, tentu, dasar, kdb, LT, LB };
+  if (kdb <= KDB_MAX + 1e-9) {
+    const d = dasarIdealHub(LB, LT, lt);
+    return { lebih:false, lt, tentu, dasar: d, atas: lt > 1 ? (LB - d) / (lt - 1) : 0, kdb: d / LT, LT, LB };
+  }
+  // lantai dasar mendekati ideal 60% lahan, sisa luas naik ke lantai atas
   const ideal = Math.max(lt + 1, Math.ceil(LB / (KDB_MAX * LT) - 1e-9));
-  const dasarIdeal = LB / ideal;
-  return { lebih:true, lt, tentu, dasar, kdb, LT, LB, ideal, dasarIdeal, kdbIdeal: dasarIdeal / LT, batas: KDB_MAX * LT };
+  const dasarIdeal = dasarIdealHub(LB, LT, ideal);
+  const atasIdeal = (LB - dasarIdeal) / (ideal - 1);
+  return { lebih:true, lt, tentu, dasar, kdb, LT, LB, ideal, dasarIdeal, atasIdeal, kdbIdeal: dasarIdeal / LT, batas: KDB_MAX * LT };
 }
 function renderKDB(){
   const box = document.getElementById('kdbBox');
@@ -1129,12 +1139,12 @@ function renderKDB(){
   box.style.display = '';
   box.innerHTML = `
     <div class="kdb-head">⚠ Luas bangunan melebihi batas ideal tapak</div>
-    <p class="kdb-txt">${r.tentu ? `Dengan <b>${r.lt} lantai</b>` : `Jika dibangun <b>1 lantai</b>`}, lantai dasar ±<b>${f(r.dasar)} m²</b> memakai <b>${pct(r.kdb)}</b> dari lahan ${f(r.LT)} m².
-    Standar DAG: bangunan maksimal <b>70%</b> lahan (±${f(r.batas)} m²), <b>30%</b> sisanya ruang terbuka untuk taman, resapan air, serta sirkulasi udara &amp; cahaya alami. Silakan pilih:</p>
+    <p class="kdb-txt">${r.tentu ? `Dengan <b>${r.lt} lantai</b>` : `Jika dibangun <b>1 lantai</b>`}, lantai dasar ±<b>${f(r.dasar)} m²</b> memakai <b>${pct(r.kdb)}</b> dari lahan ${f(r.LT)} m² — ruang terbuka hanya tersisa <b>${pct(Math.max(0, 1 - r.kdb))}</b>.
+    Standar DAG: tapak bangunan ideal <b>60% : 40%</b> ruang terbuka, maksimal <b>70% : 30%</b> (bangunan maks ±${f(r.batas)} m²). Ruang terbuka dipakai untuk taman, resapan air, serta sirkulasi udara &amp; cahaya alami. Silakan pilih:</p>
     <div class="kdb-opts">
       <label class="kdb-opt ${tetap ? '' : 'on'}"><input type="radio" name="kdbPilih" value="ikuti" ${tetap ? '' : 'checked'}>
         <div><b>Ikuti ideal — ${r.ideal} lantai</b><span class="kdb-rec">Disarankan</span>
-        <p>Lantai dasar ±${f(r.dasarIdeal)} m² (${pct(r.kdbIdeal)} lahan). Tersisa ruang terbuka untuk taman, bukaan jendela, dan ventilasi silang — rumah lebih terang &amp; sejuk alami.</p></div></label>
+        <p>Lantai dasar ±${f(r.dasarIdeal)} m² (bangunan ${pct(r.kdbIdeal)} : ruang terbuka ${pct(1 - r.kdbIdeal)}) + ${r.ideal === 2 ? 'lantai 2' : 'lantai 2–' + r.ideal + ' masing-masing'} ±${f(r.atasIdeal)} m². Ruang terbuka cukup untuk taman, bukaan jendela, dan ventilasi silang — rumah lebih terang &amp; sejuk alami.</p></div></label>
       <label class="kdb-opt ${tetap ? 'on' : ''}"><input type="radio" name="kdbPilih" value="tetap" ${tetap ? 'checked' : ''}>
         <div><b>Tetap ${r.lt} lantai</b>
         <p class="con">Kekurangan: sirkulasi udara &amp; cahaya alami kurang optimal. Ruang terbuka di sekitar bangunan sempit, sehingga ruang bagian tengah cenderung gelap &amp; panas dan lebih bergantung pada lampu &amp; AC. Taman dan resapan air juga minim — perlu dibantu void, skylight, atau inner court.</p></div></label>
@@ -1220,7 +1230,9 @@ function briefData(){
         pilihan: r.lebih ? (calc.kdbPilihan === 'tetap' ? 'tetap' : 'ikuti') : null,
         lantaiIdeal: r.lebih ? r.ideal : r.lt,
         persenLahanDiminta: Math.round(r.kdb * 1000) / 10,
-        persenLahanFinal: Math.round((r.lebih && calc.kdbPilihan !== 'tetap' ? r.kdbIdeal : r.kdb) * 1000) / 10 };
+        persenLahanFinal: Math.round((r.lebih && calc.kdbPilihan !== 'tetap' ? r.kdbIdeal : r.kdb) * 1000) / 10,
+        luasLantaiDasar: Math.round((r.lebih && calc.kdbPilihan !== 'tetap' ? r.dasarIdeal : r.dasar) * 10) / 10,
+        luasLantaiAtas: r.lebih && calc.kdbPilihan !== 'tetap' ? Math.round(r.atasIdeal * 10) / 10 : (r.atas ? Math.round(r.atas * 10) / 10 : null) };
     })(),
     luasTanah: parseFloat(val('bLuasTanah')) || null,
     lahan: lahanData(),
@@ -1390,8 +1402,8 @@ function appendBriefPage(doc, qno){
   if (d.tapak && d.tapak.melebihi){
     const pctTxt = n => String(n).replace('.', ',') + '%';
     kv('Batas tapak 70:30', d.tapak.pilihan === 'tetap'
-      ? `Klien memilih TETAP ${d.tapak.lantaiDiminta} walau lantai dasar ${pctTxt(d.tapak.persenLahanDiminta)} lahan (batas 70%). Konsekuensi: sirkulasi udara & cahaya alami kurang optimal - perlu void/skylight/inner court.`
-      : `Disesuaikan dari ${d.tapak.lantaiDiminta} menjadi ${d.jumlahLantai} (lantai dasar ${pctTxt(d.tapak.persenLahanFinal)} lahan, sisa ruang terbuka untuk taman & sirkulasi).`);
+      ? `Klien memilih TETAP ${d.tapak.lantaiDiminta}: bangunan ${pctTxt(d.tapak.persenLahanDiminta)} : ruang terbuka ${pctTxt(Math.round((100 - d.tapak.persenLahanDiminta) * 10) / 10)} (standar ideal 60:40, maks 70:30). Konsekuensi: sirkulasi udara & cahaya alami kurang optimal - perlu void/skylight/inner court.`
+      : `Disesuaikan dari ${d.tapak.lantaiDiminta} menjadi ${d.jumlahLantai}: lantai dasar ${d.tapak.luasLantaiDasar} m2 (bangunan ${pctTxt(d.tapak.persenLahanFinal)} : ruang terbuka ${pctTxt(Math.round((100 - d.tapak.persenLahanFinal) * 10) / 10)}, ideal 60:40), lantai atas ${d.tapak.luasLantaiAtas} m2.`);
   }
   kv('Luas bangunan', d.luasBangunan ? d.luasBangunan+' m²' + (d.rincianLuas ? ` (ruang ${d.rincianLuas.luasRuang} m² + koridor ${KORIDOR_PCT}% ${d.rincianLuas.koridor} m²)` : ' (diisi langsung oleh klien)') : '-');
 
