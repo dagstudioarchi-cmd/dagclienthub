@@ -137,6 +137,9 @@ nav.links a.on{background:rgba(255,255,255,.1);color:#fff;}
 }
 .field textarea{width:100%;border:1px solid var(--line-2);border-radius:var(--radius-sm);padding:12px 14px;font-size:14.5px;font-family:var(--font-b);background:var(--bg);color:var(--ink);resize:vertical;}
 .field textarea:focus{outline:2px solid var(--accent);outline-offset:1px;}
+.lahan-note{font-size:12px;color:var(--ink-3);line-height:1.65;margin:10px 0 0;}
+.lahan-note.ok{color:var(--ink-2);}
+.lahan-note.warn{color:#9a4b12;}
 .kdb-box{margin-top:20px;padding:18px 18px 16px;border:1px solid #f3c99a;background:#fff8f1;border-radius:var(--radius-sm);}
 .kdb-head{font-family:var(--font-h);font-weight:600;font-size:15px;color:var(--ink);margin-bottom:6px;}
 .kdb-txt{font-size:13px;color:var(--ink-2);line-height:1.7;margin:0;}
@@ -531,7 +534,15 @@ footer a:hover{opacity:1;}
             </select></div>
           <div class="field" style="margin-bottom:0;"><label>Luas tanah (m²)</label>
             <input type="number" id="bLuasTanah" min="0" placeholder="cth. 200"></div>
+          <div class="field" style="margin-bottom:0;"><label>Lebar muka tanah (m)</label>
+            <input type="number" id="bLebarMuka" min="0" step="0.1" placeholder="cth. 10"></div>
+          <div class="field" style="margin-bottom:0;"><label>Arah jalan / muka rumah</label>
+            <select id="bArahJalan">
+              <option value="">— Pilih —</option><option>Utara</option><option>Timur</option>
+              <option>Selatan</option><option>Barat</option><option>Belum tahu</option>
+            </select></div>
         </div>
+        <p id="lahanNote" class="lahan-note">Lebar muka = panjang sisi tanah yang menempel ke jalan. Arah jalan = mata angin sisi tanah tersebut (cek di Google Maps). Keduanya dipakai untuk menyusun zoning ruang.</p>
         <div class="field" style="margin-top:14px;"><label>Deskripsi konsep / inspirasi</label>
           <textarea id="bKonsep" rows="3" placeholder="cth. terasa lapang & terang, banyak bukaan, nuansa kayu & putih, referensi Pinterest/Instagram…"></textarea></div>
 
@@ -1072,6 +1083,29 @@ function updateArea(){
   renderKDB();
 }
 
+/* ---- Dimensi lahan: lebar muka, kedalaman, arah jalan ---- */
+const LAHAN_HINT = 'Lebar muka = panjang sisi tanah yang menempel ke jalan. Arah jalan = mata angin sisi tanah tersebut (cek di Google Maps). Keduanya dipakai untuk menyusun zoning ruang.';
+function lahanData(){
+  const LT = parseFloat(document.getElementById('bLuasTanah').value) || 0;
+  const W = parseFloat(document.getElementById('bLebarMuka').value) || 0;
+  const arah = document.getElementById('bArahJalan').value || '';
+  const D = (LT && W) ? Math.round(LT / W * 10) / 10 : null;
+  return { lebarMuka: W || null, kedalaman: D, arahJalan: (arah && arah !== 'Belum tahu') ? arah : null };
+}
+function renderLahanNote(){
+  const el = document.getElementById('lahanNote');
+  const LT = parseFloat(document.getElementById('bLuasTanah').value) || 0;
+  const d = lahanData();
+  const f = n => String(n).replace('.', ',');
+  if (d.lebarMuka && LT){
+    const ratio = d.kedalaman / d.lebarMuka;
+    let txt = `Ukuran lahan ±${f(d.lebarMuka)} m (lebar muka) × ${f(d.kedalaman)} m (kedalaman)` + (d.arahJalan ? `, menghadap jalan di sisi ${d.arahJalan}.` : '. Pilih juga arah jalan.');
+    let cls = 'lahan-note ok';
+    if (ratio > 6 || ratio < 0.2){ txt += ' ⚠ Perbandingan lebar & kedalaman tidak lazim — mohon cek kembali lebar muka tanah.'; cls = 'lahan-note warn'; }
+    el.textContent = txt; el.className = cls;
+  } else { el.textContent = LAHAN_HINT; el.className = 'lahan-note'; }
+}
+
 /* ---- Batas tapak 70:30 (KDB) ---- */
 function lantaiAngka(v){ const m = String(v || '').match(/\d+/); return m ? parseInt(m[0], 10) : 1; }
 function kdbStatus(){
@@ -1189,6 +1223,7 @@ function briefData(){
         persenLahanFinal: Math.round((r.lebih && calc.kdbPilihan !== 'tetap' ? r.kdbIdeal : r.kdb) * 1000) / 10 };
     })(),
     luasTanah: parseFloat(val('bLuasTanah')) || null,
+    lahan: lahanData(),
     modeRuang: calc.roomMode==='detail' ? 'daftar_ruang' : 'luas_saja',
     luasBangunan: parseFloat(calc.area) || 0,
     rincianLuas: calc.roomMode==='detail' ? { luasRuang:b.netto, koridorPersen:KORIDOR_PCT, koridor:b.koridor, total:b.total } : null,
@@ -1350,6 +1385,8 @@ function appendBriefPage(doc, qno){
   kv('Klien', d.klien.nama); kv('Proyek', d.klien.proyek); kv('Lingkup', d.lingkup);
   kv('Tema / gaya', d.konsep.tema); kv('Deskripsi konsep', d.konsep.deskripsi);
   kv('Jumlah lantai', d.jumlahLantai); kv('Luas tanah', d.luasTanah ? d.luasTanah+' m²' : '-');
+  if (d.lahan && d.lahan.lebarMuka) kv('Dimensi lahan', `Lebar muka ${d.lahan.lebarMuka} m x kedalaman +/-${d.lahan.kedalaman} m`);
+  kv('Arah jalan', d.lahan && d.lahan.arahJalan ? 'Sisi ' + d.lahan.arahJalan : 'Belum diketahui');
   if (d.tapak && d.tapak.melebihi){
     const pctTxt = n => String(n).replace('.', ',') + '%';
     kv('Batas tapak 70:30', d.tapak.pilihan === 'tetap'
@@ -1631,7 +1668,9 @@ document.getElementById('btnApprove').addEventListener('click', async ()=>{
 /* ============ discount / client inputs live binding ============ */
 document.getElementById('areaInput').addEventListener('input', ()=>{ updateArea(); renderSummary(); });
 document.getElementById('bLantai').addEventListener('change', renderKDB);
-document.getElementById('bLuasTanah').addEventListener('input', renderKDB);
+document.getElementById('bLuasTanah').addEventListener('input', () => { renderKDB(); renderLahanNote(); });
+document.getElementById('bLebarMuka').addEventListener('input', renderLahanNote);
+document.getElementById('bArahJalan').addEventListener('change', renderLahanNote);
 document.getElementById('quickFillBtn').addEventListener('click', quickFillRooms);
 document.getElementById('addRoomRowBtn').addEventListener('click', addRoomRow);
 document.getElementById('facCustomBtn').addEventListener('click', addCustomFacility);
